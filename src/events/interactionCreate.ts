@@ -1,6 +1,7 @@
 import { Events, Interaction } from 'discord.js';
 import type { BotClient } from '../types.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
+import { formatCooldownTime } from '../lib/formatTime.js';
 
 /** Обрабатывает слеш-команды. */
 export function registerInteractionHandler(client: BotClient) {
@@ -21,10 +22,17 @@ export function registerInteractionHandler(client: BotClient) {
     if (interaction.guildId) {
       const remaining = client.cooldowns.check(interaction.guildId, action.name);
       if (remaining > 0) {
-        await interaction.reply({
-          content: `⏱️ Команда на кулдауне. Попробуй через ${remaining} сек.`,
+        const timeStr = formatCooldownTime(remaining);
+        const timestamp = Math.floor(Date.now() / 1000) + remaining;
+        const reply = await interaction.reply({
+          content: `⏱️ Команда на кулдауне!\n⏳ Осталось: **${timeStr}**\n🕐 Доступна: <t:${timestamp}:R>`,
           ephemeral: true,
+          fetchReply: true,
         });
+        // Удаляем сообщение когда кулдаун закончится
+        setTimeout(() => {
+          interaction.deleteReply().catch(() => {});
+        }, remaining * 1000);
         return;
       }
     }

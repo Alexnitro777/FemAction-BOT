@@ -2,6 +2,7 @@ import { Events, Message } from 'discord.js';
 import type { BotClient } from '../types.js';
 import { config } from '../config.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
+import { formatCooldownTime } from '../lib/formatTime.js';
 
 /**
  * Обрабатывает текстовые команды вида !поцеловать @user.
@@ -36,11 +37,13 @@ export function registerMessageHandler(client: BotClient) {
     if (message.guildId) {
       const remaining = client.cooldowns.check(message.guildId, action.name);
       if (remaining > 0) {
+        const timeStr = formatCooldownTime(remaining);
+        const timestamp = Math.floor(Date.now() / 1000) + remaining;
         const reply = await message.reply(
-          `⏱️ Команда на кулдауне. Попробуй через ${remaining} сек.`
+          `⏱️ Команда на кулдауне!\n⏳ Осталось: **${timeStr}**\n🕐 Доступна: <t:${timestamp}:R>`
         );
-        // Удаляем сообщение через 5 секунд
-        setTimeout(() => reply.delete().catch(() => {}), 5000);
+        // Удаляем сообщение когда кулдаун закончится
+        setTimeout(() => reply.delete().catch(() => {}), remaining * 1000);
         return;
       }
     }
