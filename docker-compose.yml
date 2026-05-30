@@ -1,9 +1,8 @@
-version: '3.8'
-
 services:
-  FemAction-BOT:
+  femaction-bot:
     build: .
-    container_name: FemAction-BOT
+    image: femaction-bot:latest
+    container_name: femaction-bot
     restart: unless-stopped
     env_file:
       - .env
