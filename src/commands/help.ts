@@ -13,10 +13,27 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
     })
     .join('\n\n');
 
+  const utilityLines = [...new Set(client.utility.values())]
+    .filter((c) => c.name !== 'help')
+    .map((c) => {
+      const names = [c.textName, ...(c.aliases ?? [])]
+        .map((n) => `\`${config.prefix}${n}\``)
+        .join(', ');
+      return `**${c.description}**\n${names} и \`/${c.name}\``;
+    })
+    .join('\n\n');
+
+  const description = [
+    lines,
+    utilityLines ? `\n\n**Другие команды**\n${utilityLines}` : '',
+  ]
+    .filter(Boolean)
+    .join('\n');
+
   return new EmbedBuilder()
-    .setTitle('РП-команды')
+    .setTitle('Команды бота')
     .setColor(0xff7fa5)
-    .setDescription(lines || 'Команды не загружены.')
+    .setDescription(description || 'Команды не загружены.')
     .setFooter({ text: 'Укажи @пользователя как цель действия' });
 }
 
