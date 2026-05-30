@@ -42,6 +42,19 @@ export interface ActionDefinition {
 
   /** Цвет эмбеда в hex (напр. 0xff7fa5). По умолчанию розовый. */
   color?: number;
+
+  /**
+   * Кастомная функция для генерации embed.
+   * Если указана, игнорирует template, gifs и color.
+   * Возвращает параметры для создания embed.
+   */
+  customEmbed?: (authorMention: string, targetMention: string | null) => {
+    title?: string;
+    description: string;
+    color: number;
+    image?: string;
+    footer?: string;
+  };
 }
 
 /** Команда, не относящаяся к РП (help, ping и т.п.). */

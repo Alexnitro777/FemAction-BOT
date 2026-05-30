@@ -27,6 +27,28 @@ export function buildActionResponse(
   authorMention: string,
   targetMention: string | null
 ): { content: string; embed: EmbedBuilder | null } {
+  // Если есть кастомная логика генерации embed
+  if (action.customEmbed) {
+    const customData = action.customEmbed(authorMention, targetMention);
+    const embed = new EmbedBuilder()
+      .setColor(customData.color)
+      .setDescription(customData.description);
+
+    if (customData.title) {
+      embed.setTitle(customData.title);
+    }
+    if (customData.image) {
+      embed.setImage(customData.image);
+    }
+    if (customData.footer) {
+      embed.setFooter({ text: customData.footer });
+    }
+    embed.setTimestamp();
+
+    return { content: '', embed };
+  }
+
+  // Стандартная логика для обычных РП-команд
   let text: string;
 
   if (targetMention) {

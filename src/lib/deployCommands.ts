@@ -37,13 +37,6 @@ async function deploy() {
       .toJSON()
   );
 
-  body.push(
-    new SlashCommandBuilder()
-      .setName('silly')
-      .setDescription('Случайная оценка глупости/гениальности (0-100)')
-      .toJSON()
-  );
-
   const rest = new REST({ version: '10' }).setToken(config.token);
 
   try {
