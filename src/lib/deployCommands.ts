@@ -40,15 +40,7 @@ async function deploy() {
   body.push(
     new SlashCommandBuilder()
       .setName('silly')
-      .setDescription('Оценить свою глупость/гениальность (0-100)')
-      .addIntegerOption((opt) =>
-        opt
-          .setName('значение')
-          .setDescription('Число от 0 (гений) до 100 (глупость)')
-          .setRequired(true)
-          .setMinValue(0)
-          .setMaxValue(100)
-      )
+      .setDescription('Случайная оценка глупости/гениальности (0-100)')
       .toJSON()
   );
 
