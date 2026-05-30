@@ -1,5 +1,5 @@
 {
-  "name": "actionbot",
+  "name": "femaction-bot",
   "version": "1.0.0",
   "description": "Discord бот с РП-командами (текстовые + слеш команды)",
   "type": "module",
