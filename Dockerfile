@@ -29,5 +29,5 @@ RUN npm ci --omit=dev
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
 
-# Start the bot
-CMD ["node", "dist/index.js"]
+# Deploy commands and start the bot
+CMD ["sh", "-c", "node dist/lib/deployCommands.js && node dist/index.js"]
