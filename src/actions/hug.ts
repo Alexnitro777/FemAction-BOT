@@ -5,8 +5,8 @@ const action: ActionDefinition = {
   textName: 'обнять',
   aliases: ['hug'],
   description: 'Обнять пользователя',
-  template: '{author} крепко обнял(а) {target} 🤗',
-  selfTemplate: '{author} обнимает сам(а) себя 🫂',
+  template: '{author} крепко обнял(а) {target}.',
+  selfTemplate: '{author} обнимает сам(а) себя.',
   requireTarget: false,
   color: 0x7ec8e3,
   gifs: [

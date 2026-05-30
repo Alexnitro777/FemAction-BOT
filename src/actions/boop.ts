@@ -4,9 +4,9 @@ const action: ActionDefinition = {
   name: 'boop',
   textName: 'буп',
   aliases: ['boop'],
-  description: 'Бупнуть пользователя в нос',
-  template: '{author} бупнул(а) {target} в носик 👉👃',
-  selfTemplate: '{author} бупает воздух... но никого нет рядом 👉',
+  description: 'Бупнуть пользователя в носик.',
+  template: '{author} бупнул(а) {target} в носик.',
+  selfTemplate: '{author} бупает воздух... никого нет рядом.',
   requireTarget: false,
   color: 0xffc24b,
   gifs: [

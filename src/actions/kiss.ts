@@ -5,8 +5,8 @@ const action: ActionDefinition = {
   textName: 'поцеловать',
   aliases: ['kiss'],
   description: 'Поцеловать пользователя',
-  template: '{author} нежно поцеловал(а) {target} 💋',
-  selfTemplate: '{author} посылает воздушный поцелуй всем вокруг 💋',
+  template: '{author} нежно поцеловал(а) {target}.',
+  selfTemplate: '{author} посылает воздушный поцелуй всем вокруг.',
   requireTarget: false,
   color: 0xff5e8a,
   gifs: [

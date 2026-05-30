@@ -36,14 +36,14 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
     .setTitle('Список команд')
     .setColor(0xff7fa5)
     .setDescription(description || 'Команды не загружены.')
-    .setFooter({ text: 'Для РП-команд укажи @пользователя как цель действия' });
+    .setFooter({ text: 'Для РП-команд укажи @пользователя как цель действия.' });
 }
 
 const command: UtilityCommand = {
   name: 'help',
   textName: 'help',
   aliases: ['commands'],
-  description: 'Список доступных РП-команд',
+  description: 'Список доступных РП-команд.',
   executeText: async (message) => {
     if (!message.channel.isSendable()) return;
     await message.reply({ embeds: [buildHelpEmbed(message.client)] });

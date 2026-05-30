@@ -9,8 +9,8 @@ import type { ActionDefinition } from '../types.js';
 const action: ActionDefinition = {
   name: 'silly',
   textName: 'силли',
-  aliases: ['silly', 'глупость'],
-  description: 'Случайная оценка глупости/гениальности (0-100)',
+  aliases: ['silly'],
+  description: 'Силлимер (0-100)',
   template: '', // Не используется, так как логика кастомная
   selfTemplate: '', // Не используется
   requireTarget: false,
@@ -24,13 +24,13 @@ const action: ActionDefinition = {
     // Определяем сообщение
     let message: string;
     if (value === 0) {
-      message = '🧠 **Абсолютный гений!** Ваш интеллект не знает границ! ✨';
+      message = '🧠 **Абсолютный гений!** Ваш интеллект не знает границ!';
     } else if (value === 100) {
-      message = '💀 **Абсолютная глупенькость!** Поздравляем, вы достигли дна! 🎉';
+      message = '💀 **Абсолютная глупенькость!** Поздравляем, вы достигли дна!';
     } else if (value <= 10) {
       message = `🎓 **Глупенький на ${value}!** Почти гений, но не совсем!`;
     } else if (value <= 25) {
-      message = `📚 **Глупенький на ${value}!** Немного глуповат, но в целом умный!`;
+      message = `📚 **Глупенький на ${value}!** Немного глуповат, но в целом умненький!`;
     } else if (value <= 40) {
       message = `🙂 **Глупенький на ${value}!** Выше среднего по глупости!`;
     } else if (value <= 60) {
@@ -40,7 +40,7 @@ const action: ActionDefinition = {
     } else if (value <= 90) {
       message = `🤪 **Глупенький на ${value}!** Очень глупенький!`;
     } else {
-      message = `🤡 **Глупенький на ${value}!** Критический уровень глупости!`;
+      message = `🤡 **Глупенький на ${value}!** Критический уровень глупости!!!`;
     }
 
     // Определяем цвет
@@ -63,54 +63,53 @@ const action: ActionDefinition = {
     let gif: string;
     if (value === 0) {
       const geniusGifs = [
-        'https://media.giphy.com/media/d3mlE7uhX8KFgEmY/giphy.gif',
-        'https://media.giphy.com/media/3owzW5c1tPq63MPmWk/giphy.gif',
-        'https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif',
+        'https://media.tenor.com/example-silly-1.gif',
+        'https://media.tenor.com/example-silly-2.gif',
+        'https://media.tenor.com/example-silly-3.gif',
       ];
       gif = geniusGifs[Math.floor(Math.random() * geniusGifs.length)];
     } else if (value === 100) {
       const dumbGifs = [
-        'https://media.giphy.com/media/l3q2K5jinAlChoCLS/giphy.gif',
-        'https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif',
-        'https://media.giphy.com/media/APqEbxBsVlkWSuFpth/giphy.gif',
+        'https://media.tenor.com/example-silly-4.gif',
+        'https://media.tenor.com/example-silly-5.gif',
+        'https://media.tenor.com/example-silly-6.gif',
       ];
       gif = dumbGifs[Math.floor(Math.random() * dumbGifs.length)];
     } else if (value <= 25) {
       const smartGifs = [
-        'https://media.giphy.com/media/a5viI92PAF89q/giphy.gif',
-        'https://media.giphy.com/media/3owzW2qI07rokGALfy/giphy.gif',
-        'https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif',
+        'https://media.tenor.com/example-silly-7.gif',
+        'https://media.tenor.com/example-silly-8.gif',
+        'https://media.tenor.com/example-silly-9.gif',
       ];
       gif = smartGifs[Math.floor(Math.random() * smartGifs.length)];
     } else if (value <= 50) {
       const averageGifs = [
-        'https://media.giphy.com/media/3o7btNhMBytxAM6YBa/giphy.gif',
-        'https://media.giphy.com/media/l0HlvtIPzPdt2usKs/giphy.gif',
-        'https://media.giphy.com/media/xT0xeMA62E1XIlup68/giphy.gif',
+        'https://media.tenor.com/example-silly-10.gif',
+        'https://media.tenor.com/example-silly-11.gif',
+        'https://media.tenor.com/example-silly-12.gif',
       ];
       gif = averageGifs[Math.floor(Math.random() * averageGifs.length)];
     } else if (value <= 75) {
       const sillyGifs = [
-        'https://media.giphy.com/media/l3q2XhfQ8oCkm1Ts4/giphy.gif',
-        'https://media.giphy.com/media/3o7btW7zRi0r8V8OGI/giphy.gif',
-        'https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif',
+        'https://media.tenor.com/example-silly-12.gif',
+        'https://media.tenor.com/example-silly-13.gif',
+        'https://media.tenor.com/example-silly-14.gif',
       ];
       gif = sillyGifs[Math.floor(Math.random() * sillyGifs.length)];
     } else {
       const veryDumbGifs = [
-        'https://media.giphy.com/media/l0HlQ7LRalQqdWfao/giphy.gif',
-        'https://media.giphy.com/media/3o7btYLAW7doynq3p6/giphy.gif',
-        'https://media.giphy.com/media/l0MYC0LajbaPoEADu/giphy.gif',
+        'https://media.tenor.com/example-silly-15.gif',
+        'https://media.tenor.com/example-silly-16.gif',
+        'https://media.tenor.com/example-silly-17.gif',
       ];
       gif = veryDumbGifs[Math.floor(Math.random() * veryDumbGifs.length)];
     }
 
     return {
-      title: `Силли-метр: ${value}/100`,
+      title: `Силлимер`,
       description: `${authorMention} ${message}`,
       color,
       image: gif,
-      footer: '0 = гений | 100 = абсолютная глупенькость',
     };
   },
 };
