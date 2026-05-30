@@ -9,7 +9,7 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
       const names = [a.textName, ...(a.aliases ?? [])]
         .map((n) => `\`${config.prefix}${n}\``)
         .join(', ');
-      return `**${a.description}**\n${names} · слеш: \`/${a.name}\``;
+      return `**${a.description}**\n${names} и \`/${a.name}\``;
     })
     .join('\n\n');
 
@@ -27,10 +27,13 @@ const command: UtilityCommand = {
   description: 'Список доступных РП-команд',
   executeText: async (message) => {
     if (!message.channel.isSendable()) return;
-    await message.channel.send({ embeds: [buildHelpEmbed(message.client)] });
+    await message.reply({ embeds: [buildHelpEmbed(message.client)] });
   },
   executeSlash: async (interaction) => {
-    await interaction.reply({ embeds: [buildHelpEmbed(interaction.client)] });
+    await interaction.reply({
+      embeds: [buildHelpEmbed(interaction.client)],
+      ephemeral: true
+    });
   },
 };
 

@@ -69,6 +69,7 @@ declare module 'discord.js' {
     /** Карта алиас/textName -> каноническое имя команды. */
     textIndex: Collection<string, string>;
     utility: Collection<string, UtilityCommand>;
+    cooldowns: import('./lib/cooldowns.js').CooldownManager;
   }
 }
 

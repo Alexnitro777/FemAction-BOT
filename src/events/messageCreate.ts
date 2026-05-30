@@ -32,6 +32,19 @@ export function registerMessageHandler(client: BotClient) {
     const action = client.rpActions.get(canonical);
     if (!action) return;
 
+    // Проверка кулдауна (только для серверов, не для ЛС).
+    if (message.guildId) {
+      const remaining = client.cooldowns.check(message.guildId, action.name);
+      if (remaining > 0) {
+        const reply = await message.reply(
+          `⏱️ Команда на кулдауне. Попробуй через ${remaining} сек.`
+        );
+        // Удаляем сообщение через 5 секунд
+        setTimeout(() => reply.delete().catch(() => {}), 5000);
+        return;
+      }
+    }
+
     const target = message.mentions.users.first();
     if (action.requireTarget && !target) {
       await message.reply(`Укажи цель: \`${config.prefix}${action.textName} @пользователь\``);
@@ -52,5 +65,10 @@ export function registerMessageHandler(client: BotClient) {
       embeds: embed ? [embed] : [],
       allowedMentions: { parse: ['users'] },
     });
+
+    // Устанавливаем кулдаун после успешного выполнения.
+    if (message.guildId) {
+      client.cooldowns.set(message.guildId, action.name);
+    }
   });
 }

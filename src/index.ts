@@ -11,6 +11,7 @@ import { loadActions } from './lib/loadActions.js';
 import { registerMessageHandler } from './events/messageCreate.js';
 import { registerInteractionHandler } from './events/interactionCreate.js';
 import helpCommand from './commands/help.js';
+import { CooldownManager } from './lib/cooldowns.js';
 
 async function main() {
   // MessageContent нужен для чтения текстовых команд — включи его
@@ -27,6 +28,9 @@ async function main() {
   const { actions, textIndex } = await loadActions();
   client.rpActions = actions;
   client.textIndex = textIndex;
+
+  // Инициализируем систему кулдаунов (20 секунд).
+  client.cooldowns = new CooldownManager(20);
 
   // Регистрируем утилитарные команды.
   client.utility = new Collection<string, UtilityCommand>();

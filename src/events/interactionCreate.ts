@@ -17,6 +17,18 @@ export function registerInteractionHandler(client: BotClient) {
     const action = client.rpActions.get(interaction.commandName);
     if (!action) return;
 
+    // Проверка кулдауна (только для серверов).
+    if (interaction.guildId) {
+      const remaining = client.cooldowns.check(interaction.guildId, action.name);
+      if (remaining > 0) {
+        await interaction.reply({
+          content: `⏱️ Команда на кулдауне. Попробуй через ${remaining} сек.`,
+          ephemeral: true,
+        });
+        return;
+      }
+    }
+
     const target = interaction.options.getUser('цель');
     const authorMention = `<@${interaction.user.id}>`;
     const targetMention = target ? `<@${target.id}>` : null;
@@ -32,5 +44,10 @@ export function registerInteractionHandler(client: BotClient) {
       embeds: embed ? [embed] : [],
       allowedMentions: { parse: ['users'] },
     });
+
+    // Устанавливаем кулдаун после успешного выполнения.
+    if (interaction.guildId) {
+      client.cooldowns.set(interaction.guildId, action.name);
+    }
   });
 }
