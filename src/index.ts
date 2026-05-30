@@ -11,6 +11,7 @@ import { loadActions } from './lib/loadActions.js';
 import { registerMessageHandler } from './events/messageCreate.js';
 import { registerInteractionHandler } from './events/interactionCreate.js';
 import helpCommand from './commands/help.js';
+import sillyCommand from './commands/silly.js';
 import { CooldownManager } from './lib/cooldowns.js';
 
 async function main() {
@@ -37,6 +38,12 @@ async function main() {
   client.utility.set(helpCommand.name, helpCommand);
   for (const alias of helpCommand.aliases ?? []) {
     client.utility.set(alias, helpCommand);
+  }
+
+  client.utility.set(sillyCommand.name, sillyCommand);
+  client.utility.set(sillyCommand.textName, sillyCommand);
+  for (const alias of sillyCommand.aliases ?? []) {
+    client.utility.set(alias, sillyCommand);
   }
 
   registerMessageHandler(client);

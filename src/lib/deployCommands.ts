@@ -29,11 +29,26 @@ async function deploy() {
     body.push(builder.toJSON());
   }
 
-  // Утилитарная команда help.
+  // Утилитарные команды.
   body.push(
     new SlashCommandBuilder()
       .setName('help')
       .setDescription('Список доступных РП-команд')
+      .toJSON()
+  );
+
+  body.push(
+    new SlashCommandBuilder()
+      .setName('silly')
+      .setDescription('Оценить свою глупость/гениальность (0-100)')
+      .addIntegerOption((opt) =>
+        opt
+          .setName('значение')
+          .setDescription('Число от 0 (гений) до 100 (глупость)')
+          .setRequired(true)
+          .setMinValue(0)
+          .setMaxValue(100)
+      )
       .toJSON()
   );
 
