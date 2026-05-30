@@ -1,4 +1,4 @@
-import { Events, Interaction } from 'discord.js';
+import { Events, Interaction, EmbedBuilder } from 'discord.js';
 import type { BotClient } from '../types.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
 import { formatCooldownTime } from '../lib/formatTime.js';
@@ -24,11 +24,18 @@ export function registerInteractionHandler(client: BotClient) {
       if (remaining > 0) {
         const timeStr = formatCooldownTime(remaining);
         const timestamp = Math.floor(Date.now() / 1000) + remaining;
-        const reply = await interaction.reply({
-          content: `⏱️ Команда на кулдауне!\n⏳ Осталось: **${timeStr}**\n🕐 Доступна: <t:${timestamp}:R>`,
+
+        const cooldownEmbed = new EmbedBuilder()
+          .setColor(0xFFA500) // Оранжевый цвет
+          .setTitle('⏱️ Команда на кулдауне!')
+          .setDescription(`⏳ Осталось: **${timeStr}**\n🕐 Доступна: <t:${timestamp}:R>`)
+          .setTimestamp();
+
+        await interaction.reply({
+          embeds: [cooldownEmbed],
           ephemeral: true,
-          fetchReply: true,
         });
+
         // Удаляем сообщение когда кулдаун закончится
         setTimeout(() => {
           interaction.deleteReply().catch(() => {});
