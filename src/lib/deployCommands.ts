@@ -19,13 +19,18 @@ async function deploy() {
   for (const action of actions.values()) {
     const builder = new SlashCommandBuilder()
       .setName(action.name)
-      .setDescription(action.description)
-      .addUserOption((opt) =>
+      .setDescription(action.description);
+
+    // Добавляем опцию цели только если команда не silly
+    if (action.name !== 'silly') {
+      builder.addUserOption((opt) =>
         opt
           .setName('цель')
           .setDescription('Кого затронуть действием')
           .setRequired(action.requireTarget ?? false)
       );
+    }
+
     body.push(builder.toJSON());
   }
 

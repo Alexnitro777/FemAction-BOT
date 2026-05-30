@@ -43,7 +43,7 @@ export function registerMessageHandler(client: BotClient) {
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
-          .setDescription(`⏳ Осталось: **${timeStr}**\n🕐 Доступна: <t:${timestamp}:R>`)
+          .setDescription(`🕐 Осталось: <t:${timestamp}:R>`)
           .setTimestamp();
 
         const reply = await message.reply({
@@ -56,7 +56,7 @@ export function registerMessageHandler(client: BotClient) {
       }
     }
 
-    const target = message.mentions.users.first();
+    const target = action.name === 'silly' ? null : message.mentions.users.first();
     if (action.requireTarget && !target) {
       await message.reply(`Укажи цель: \`${config.prefix}${action.textName} @пользователь\``);
       return;

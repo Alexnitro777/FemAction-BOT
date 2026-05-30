@@ -28,7 +28,7 @@ export function registerInteractionHandler(client: BotClient) {
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
-          .setDescription(`⏳ Осталось: **${timeStr}**\n🕐 Доступна: <t:${timestamp}:R>`)
+          .setDescription(`🕐 Осталось: <t:${timestamp}:R>`)
           .setTimestamp();
 
         await interaction.reply({
@@ -44,7 +44,7 @@ export function registerInteractionHandler(client: BotClient) {
       }
     }
 
-    const target = interaction.options.getUser('цель');
+    const target = action.name === 'silly' ? null : interaction.options.getUser('цель');
     const authorMention = `<@${interaction.user.id}>`;
     const targetMention = target ? `<@${target.id}>` : null;
 
