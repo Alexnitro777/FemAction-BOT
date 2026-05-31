@@ -20,10 +20,10 @@ export function registerInteractionHandler(client: BotClient) {
 
     // Проверка кулдауна (только для серверов).
     if (interaction.guildId) {
-      const remaining = client.cooldowns.check(interaction.guildId, action.name);
-      if (remaining > 0) {
-        const timeStr = formatCooldownTime(remaining);
-        const timestamp = Math.floor(Date.now() / 1000) + remaining;
+      const cooldown = client.cooldowns.check(interaction.guildId, action.name);
+      if (cooldown) {
+        const timeStr = formatCooldownTime(cooldown.seconds);
+        const timestamp = Math.floor(Date.now() / 1000) + cooldown.seconds;
 
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
@@ -35,10 +35,10 @@ export function registerInteractionHandler(client: BotClient) {
           ephemeral: true,
         });
 
-        // Удаляем сообщение когда кулдаун закончится
+        // Удаляем сообщение когда кулдаун закончится (используем точное время в мс)
         setTimeout(() => {
           interaction.deleteReply().catch(() => {});
-        }, remaining * 1000);
+        }, cooldown.ms);
         return;
       }
     }

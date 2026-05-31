@@ -15,24 +15,28 @@ export class CooldownManager {
 
   /**
    * Проверяет, находится ли команда на кулдауне для данного сервера.
-   * @returns Оставшееся время в секундах, или 0 если кулдаун истёк
+   * @returns Объект с оставшимся временем в секундах и миллисекундах, или null если кулдаун истёк
    */
-  check(guildId: string, commandName: string): number {
+  check(guildId: string, commandName: string): { seconds: number; ms: number } | null {
     const guildCooldowns = this.cooldowns.get(guildId);
-    if (!guildCooldowns) return 0;
+    if (!guildCooldowns) return null;
 
     const lastUsed = guildCooldowns.get(commandName);
-    if (!lastUsed) return 0;
+    if (!lastUsed) return null;
 
     const now = Date.now();
     const elapsed = now - lastUsed;
 
     if (elapsed >= this.cooldownTime) {
       guildCooldowns.delete(commandName);
-      return 0;
+      return null;
     }
 
-    return Math.ceil((this.cooldownTime - elapsed) / 1000);
+    const remainingMs = this.cooldownTime - elapsed;
+    return {
+      seconds: Math.ceil(remainingMs / 1000),
+      ms: remainingMs
+    };
   }
 
   /**
