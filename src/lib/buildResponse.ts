@@ -43,7 +43,6 @@ export function buildActionResponse(
     if (customData.footer) {
       embed.setFooter({ text: customData.footer });
     }
-    embed.setTimestamp();
 
     return { content: '', embed };
   }
