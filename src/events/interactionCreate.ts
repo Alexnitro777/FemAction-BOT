@@ -1,7 +1,6 @@
 import { Events, Interaction, EmbedBuilder } from 'discord.js';
 import type { BotClient } from '../types.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
-import { formatCooldownTime } from '../lib/formatTime.js';
 
 /** Обрабатывает слеш-команды. */
 export function registerInteractionHandler(client: BotClient) {
@@ -22,19 +21,6 @@ export function registerInteractionHandler(client: BotClient) {
     if (interaction.guildId) {
       const cooldown = client.cooldowns.check(interaction.guildId, action.name);
       if (cooldown) {
-        const now = Date.now();
-        const nowSeconds = Math.floor(now / 1000);
-
-        console.log('[Cooldown Debug]', {
-          action: action.name,
-          remainingMs: cooldown.ms,
-          remainingSeconds: cooldown.seconds,
-          timestamp: cooldown.timestamp,
-          nowSeconds,
-          difference: cooldown.timestamp - nowSeconds,
-          willDeleteIn: `${cooldown.ms}ms`
-        });
-
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
@@ -45,11 +31,10 @@ export function registerInteractionHandler(client: BotClient) {
           ephemeral: true,
         });
 
-        // Удаляем сообщение на 5 секунд раньше, чем timestamp покажет "сейчас"
-        const deleteAfter = Math.max(0, (cooldown.timestamp * 1000) - now - 5000);
+        // Удаляем сообщение ровно когда заканчивается кулдаун
         setTimeout(() => {
           interaction.deleteReply().catch(() => {});
-        }, deleteAfter);
+        }, cooldown.ms);
         return;
       }
     }

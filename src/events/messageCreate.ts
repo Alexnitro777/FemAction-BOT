@@ -2,7 +2,6 @@ import { Events, Message, EmbedBuilder } from 'discord.js';
 import type { BotClient } from '../types.js';
 import { config } from '../config.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
-import { formatCooldownTime } from '../lib/formatTime.js';
 
 /**
  * Обрабатывает текстовые команды вида !поцеловать @user.
@@ -37,19 +36,6 @@ export function registerMessageHandler(client: BotClient) {
     if (message.guildId) {
       const cooldown = client.cooldowns.check(message.guildId, action.name);
       if (cooldown) {
-        const now = Date.now();
-        const nowSeconds = Math.floor(now / 1000);
-
-        console.log('[Cooldown Debug]', {
-          action: action.name,
-          remainingMs: cooldown.ms,
-          remainingSeconds: cooldown.seconds,
-          timestamp: cooldown.timestamp,
-          nowSeconds,
-          difference: cooldown.timestamp - nowSeconds,
-          willDeleteIn: `${cooldown.ms}ms`
-        });
-
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
@@ -59,9 +45,8 @@ export function registerMessageHandler(client: BotClient) {
           embeds: [cooldownEmbed],
         });
 
-        // Удаляем сообщение на 5 секунд раньше, чем timestamp покажет "сейчас"
-        const deleteAfter = Math.max(0, (cooldown.timestamp * 1000) - now - 5000);
-        setTimeout(() => reply.delete().catch(() => {}), deleteAfter);
+        // Удаляем сообщение ровно когда заканчивается кулдаун
+        setTimeout(() => reply.delete().catch(() => {}), cooldown.ms);
         return;
       }
     }
