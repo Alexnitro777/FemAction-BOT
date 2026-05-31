@@ -45,6 +45,22 @@ export function registerInteractionHandler(client: BotClient) {
     }
 
     const target = action.name === 'silly' ? null : interaction.options.getUser('цель');
+
+    // Проверка: нельзя выбрать себя в качестве цели (кроме silly)
+    if (target && target.id === interaction.user.id && action.name !== 'silly') {
+      const errorEmbed = new EmbedBuilder()
+        .setColor(0xFF0000) // Красный цвет
+        .setTitle('❌ Ошибка!')
+        .setDescription('Вы не можете выбрать себя в качестве цели для этой команды!')
+        .setTimestamp();
+
+      await interaction.reply({
+        embeds: [errorEmbed],
+        ephemeral: true,
+      });
+      return;
+    }
+
     const authorMention = `<@${interaction.user.id}>`;
     const targetMention = target ? `<@${target.id}>` : null;
 
