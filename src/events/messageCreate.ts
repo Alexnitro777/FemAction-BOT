@@ -37,7 +37,18 @@ export function registerMessageHandler(client: BotClient) {
     if (message.guildId) {
       const cooldown = client.cooldowns.check(message.guildId, action.name);
       if (cooldown) {
-        const timeStr = formatCooldownTime(cooldown.seconds);
+        const now = Date.now();
+        const nowSeconds = Math.floor(now / 1000);
+
+        console.log('[Cooldown Debug]', {
+          action: action.name,
+          remainingMs: cooldown.ms,
+          remainingSeconds: cooldown.seconds,
+          timestamp: cooldown.timestamp,
+          nowSeconds,
+          difference: cooldown.timestamp - nowSeconds,
+          willDeleteIn: `${cooldown.ms}ms`
+        });
 
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
