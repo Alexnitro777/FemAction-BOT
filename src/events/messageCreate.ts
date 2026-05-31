@@ -2,6 +2,7 @@ import { Events, Message, EmbedBuilder } from 'discord.js';
 import type { BotClient } from '../types.js';
 import { config } from '../config.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
+import { formatCooldownTime } from '../lib/formatTime.js';
 
 /**
  * Обрабатывает текстовые команды вида !поцеловать @user.
@@ -39,7 +40,7 @@ export function registerMessageHandler(client: BotClient) {
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
-          .setDescription(`🕐 Осталось: <t:${cooldown.timestamp}:R>`);
+          .setDescription(`🕐 Осталось: ${formatCooldownTime(cooldown.seconds)}`);
 
         await message.reply({
           embeds: [cooldownEmbed],

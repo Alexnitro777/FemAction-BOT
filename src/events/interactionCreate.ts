@@ -1,6 +1,7 @@
 import { Events, Interaction, EmbedBuilder } from 'discord.js';
 import type { BotClient } from '../types.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
+import { formatCooldownTime } from '../lib/formatTime.js';
 
 /** Обрабатывает слеш-команды. */
 export function registerInteractionHandler(client: BotClient) {
@@ -24,7 +25,7 @@ export function registerInteractionHandler(client: BotClient) {
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
-          .setDescription(`🕐 Осталось: <t:${cooldown.timestamp}:R>`);
+          .setDescription(`🕐 Осталось: ${formatCooldownTime(cooldown.seconds)}`);
 
         await interaction.reply({
           embeds: [cooldownEmbed],

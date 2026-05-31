@@ -29,8 +29,8 @@ async function main() {
   client.rpActions = actions;
   client.textIndex = textIndex;
 
-  // Инициализируем систему кулдаунов (25 секунд).
-  client.cooldowns = new CooldownManager(25);
+  // Инициализируем систему кулдаунов (20 секунд).
+  client.cooldowns = new CooldownManager(20);
 
   // Регистрируем утилитарные команды.
   client.utility = new Collection<string, UtilityCommand>();
