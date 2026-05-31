@@ -41,15 +41,9 @@ export function registerMessageHandler(client: BotClient) {
           .setTitle('⏱️ Команда на кулдауне!')
           .setDescription(`🕐 Осталось: <t:${cooldown.timestamp}:R>`);
 
-        const reply = await message.reply({
+        await message.reply({
           embeds: [cooldownEmbed],
         });
-
-        // Удаляем сообщение ровно когда таймштамп достигает 0.
-        // Считаем задержку от абсолютного времени окончания ПОСЛЕ отправки
-        // ответа, чтобы сетевая задержка reply не сдвигала таймер.
-        const delay = Math.max(0, cooldown.timestamp * 1000 - Date.now());
-        setTimeout(() => reply.delete().catch(() => {}), delay);
         return;
       }
     }
