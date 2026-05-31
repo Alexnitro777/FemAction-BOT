@@ -30,7 +30,7 @@ async function main() {
   client.textIndex = textIndex;
 
   // Инициализируем систему кулдаунов (25 секунд).
-  client.cooldowns = new CooldownManager(20);
+  client.cooldowns = new CooldownManager(25);
 
   // Регистрируем утилитарные команды.
   client.utility = new Collection<string, UtilityCommand>();
