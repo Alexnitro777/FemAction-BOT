@@ -8,7 +8,7 @@ export class CooldownManager {
   private cooldowns: Collection<string, Collection<string, number>>;
   private readonly cooldownTime: number;
 
-  constructor(cooldownSeconds: number = 20) {
+  constructor(cooldownSeconds: number = 25) {
     this.cooldowns = new Collection();
     this.cooldownTime = cooldownSeconds * 1000; // Конвертируем в миллисекунды
   }
