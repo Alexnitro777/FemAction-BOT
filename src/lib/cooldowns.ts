@@ -34,9 +34,9 @@ export class CooldownManager {
 
     const remainingMs = this.cooldownTime - elapsed;
 
-    // Вычисляем точный timestamp окончания кулдауна
+    // Вычисляем точный timestamp окончания кулдауна (округляем вверх)
     const endTime = lastUsed + this.cooldownTime;
-    const timestamp = Math.floor(endTime / 1000);
+    const timestamp = Math.ceil(endTime / 1000);
 
     return {
       seconds: Math.ceil(remainingMs / 1000),
