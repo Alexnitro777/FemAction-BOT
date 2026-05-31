@@ -45,8 +45,8 @@ export function registerInteractionHandler(client: BotClient) {
           ephemeral: true,
         });
 
-        // Удаляем сообщение точно когда timestamp покажет "сейчас"
-        const deleteAfter = (cooldown.timestamp * 1000) - now;
+        // Удаляем сообщение на 5 секунд раньше, чем timestamp покажет "сейчас"
+        const deleteAfter = Math.max(0, (cooldown.timestamp * 1000) - now - 5000);
         setTimeout(() => {
           interaction.deleteReply().catch(() => {});
         }, deleteAfter);

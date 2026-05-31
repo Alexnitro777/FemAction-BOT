@@ -59,8 +59,8 @@ export function registerMessageHandler(client: BotClient) {
           embeds: [cooldownEmbed],
         });
 
-        // Удаляем сообщение точно когда timestamp покажет "сейчас"
-        const deleteAfter = (cooldown.timestamp * 1000) - now;
+        // Удаляем сообщение на 5 секунд раньше, чем timestamp покажет "сейчас"
+        const deleteAfter = Math.max(0, (cooldown.timestamp * 1000) - now - 5000);
         setTimeout(() => reply.delete().catch(() => {}), deleteAfter);
         return;
       }
