@@ -38,12 +38,11 @@ export function registerMessageHandler(client: BotClient) {
       const cooldown = client.cooldowns.check(message.guildId, action.name);
       if (cooldown) {
         const timeStr = formatCooldownTime(cooldown.seconds);
-        const timestamp = Math.floor(Date.now() / 1000) + cooldown.seconds;
 
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
-          .setDescription(`🕐 Осталось: <t:${timestamp}:R>`);
+          .setDescription(`🕐 Осталось: <t:${cooldown.timestamp}:R>`);
 
         const reply = await message.reply({
           embeds: [cooldownEmbed],
