@@ -43,8 +43,7 @@ export function registerMessageHandler(client: BotClient) {
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
-          .setDescription(`🕐 Осталось: <t:${timestamp}:R>`)
-          .setTimestamp();
+          .setDescription(`🕐 Осталось: <t:${timestamp}:R>`);
 
         const reply = await message.reply({
           embeds: [cooldownEmbed],
@@ -59,6 +58,19 @@ export function registerMessageHandler(client: BotClient) {
     const target = action.name === 'silly' ? null : message.mentions.users.first();
     if (action.requireTarget && !target) {
       await message.reply(`Укажи цель: \`${config.prefix}${action.textName} @пользователь\``);
+      return;
+    }
+
+    // Проверка: нельзя выбрать себя в качестве цели (кроме silly)
+    if (target && target.id === message.author.id && action.name !== 'silly') {
+      const errorEmbed = new EmbedBuilder()
+        .setColor(0xFF0000) // Красный цвет
+        .setTitle('❌ Ошибка!')
+        .setDescription('Вы не можете выбрать себя в качестве цели для этой команды!');
+
+      await message.reply({
+        embeds: [errorEmbed],
+      });
       return;
     }
 

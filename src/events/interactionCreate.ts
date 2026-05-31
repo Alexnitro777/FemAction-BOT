@@ -28,8 +28,7 @@ export function registerInteractionHandler(client: BotClient) {
         const cooldownEmbed = new EmbedBuilder()
           .setColor(0xFFA500) // Оранжевый цвет
           .setTitle('⏱️ Команда на кулдауне!')
-          .setDescription(`🕐 Осталось: <t:${timestamp}:R>`)
-          .setTimestamp();
+          .setDescription(`🕐 Осталось: <t:${timestamp}:R>`);
 
         await interaction.reply({
           embeds: [cooldownEmbed],
@@ -51,8 +50,7 @@ export function registerInteractionHandler(client: BotClient) {
       const errorEmbed = new EmbedBuilder()
         .setColor(0xFF0000) // Красный цвет
         .setTitle('❌ Ошибка!')
-        .setDescription('Вы не можете выбрать себя в качестве цели для этой команды!')
-        .setTimestamp();
+        .setDescription('Вы не можете выбрать себя в качестве цели для этой команды!');
 
       await interaction.reply({
         embeds: [errorEmbed],
