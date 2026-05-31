@@ -31,10 +31,13 @@ export function registerInteractionHandler(client: BotClient) {
           ephemeral: true,
         });
 
-        // Удаляем сообщение ровно когда заканчивается кулдаун
+        // Удаляем сообщение ровно когда таймштамп достигает 0.
+        // Считаем задержку от абсолютного времени окончания ПОСЛЕ отправки
+        // ответа, чтобы сетевая задержка reply не сдвигала таймер.
+        const delay = Math.max(0, cooldown.timestamp * 1000 - Date.now());
         setTimeout(() => {
           interaction.deleteReply().catch(() => {});
-        }, cooldown.ms);
+        }, delay);
         return;
       }
     }
