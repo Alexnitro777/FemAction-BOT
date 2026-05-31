@@ -59,8 +59,9 @@ export function registerMessageHandler(client: BotClient) {
           embeds: [cooldownEmbed],
         });
 
-        // Удаляем сообщение когда кулдаун закончится (используем точное время в мс)
-        setTimeout(() => reply.delete().catch(() => {}), cooldown.ms);
+        // Удаляем сообщение точно когда timestamp покажет "сейчас"
+        const deleteAfter = (cooldown.timestamp * 1000) - now;
+        setTimeout(() => reply.delete().catch(() => {}), deleteAfter);
         return;
       }
     }

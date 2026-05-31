@@ -45,10 +45,11 @@ export function registerInteractionHandler(client: BotClient) {
           ephemeral: true,
         });
 
-        // Удаляем сообщение когда кулдаун закончится (используем точное время в мс)
+        // Удаляем сообщение точно когда timestamp покажет "сейчас"
+        const deleteAfter = (cooldown.timestamp * 1000) - now;
         setTimeout(() => {
           interaction.deleteReply().catch(() => {});
-        }, cooldown.ms);
+        }, deleteAfter);
         return;
       }
     }
