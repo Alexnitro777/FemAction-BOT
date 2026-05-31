@@ -33,13 +33,13 @@ export class CooldownManager {
     }
 
     const remainingMs = this.cooldownTime - elapsed;
-    const remainingSeconds = Math.ceil(remainingMs / 1000);
 
-    // Вычисляем timestamp на основе того же now, чтобы избежать рассинхронизации
-    const timestamp = Math.floor(now / 1000) + remainingSeconds;
+    // Вычисляем точный timestamp окончания кулдауна
+    const endTime = lastUsed + this.cooldownTime;
+    const timestamp = Math.floor(endTime / 1000);
 
     return {
-      seconds: remainingSeconds,
+      seconds: Math.ceil(remainingMs / 1000),
       ms: remainingMs,
       timestamp
     };
