@@ -1,4 +1,4 @@
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, MessageFlags } from 'discord.js';
 import type { BotClient, UtilityCommand } from '../types.js';
 import { config } from '../config.js';
 
@@ -14,8 +14,8 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
       .join(', ');
     const line = `**${a.description}**\n${names} и \`/${a.name}\``;
 
-    // silly - это не РП-команда, выделяем её отдельно
-    if (a.name === 'silly') {
+    // Действия без цели (напр. silly) — не РП-команды, выделяем отдельно.
+    if (a.noTarget) {
       otherCommands.push(line);
     } else {
       rpCommands.push(line);
@@ -51,7 +51,7 @@ const command: UtilityCommand = {
   executeSlash: async (interaction) => {
     await interaction.reply({
       embeds: [buildHelpEmbed(interaction.client)],
-      ephemeral: true
+      flags: MessageFlags.Ephemeral,
     });
   },
 };

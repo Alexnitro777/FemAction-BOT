@@ -32,7 +32,7 @@ Discord-бот с РП-командами. Поддерживает и текс�
 
 3. **Зарегистрируй слеш-команды:**
    ```bash
-   docker compose run --rm FemAction-BOT npm run deploy:prod
+   docker compose run --rm femaction-bot npm run deploy:prod
    ```
 
 4. **Запусти бота:**
@@ -93,7 +93,7 @@ export default action;
 
 2. Зарегистрируй новую команду:
    ```bash
-   docker compose run --rm FemAction-BOT npm run deploy:prod
+   docker compose run --rm femaction-bot npm run deploy:prod
    ```
 
 3. Перезапусти бота:
@@ -143,7 +143,7 @@ src/
 - Проверь логи: `docker compose logs -f`
 
 ### Слеш-команды не появляются
-- Запусти регистрацию команд: `docker compose run --rm FemAction-BOT npm run deploy:prod`
+- Запусти регистрацию команд: `docker compose run --rm femaction-bot npm run deploy:prod`
 - Если указан `GUILD_ID`, команды появятся мгновенно только на этом сервере
 - Без `GUILD_ID` команды регистрируются глобально (может занять до 1 часа)
 

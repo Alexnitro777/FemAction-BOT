@@ -21,8 +21,8 @@ async function deploy() {
       .setName(action.name)
       .setDescription(action.description);
 
-    // Добавляем опцию цели только если команда не silly
-    if (action.name !== 'silly') {
+    // Добавляем опцию цели только если действие её принимает.
+    if (!action.noTarget) {
       builder.addUserOption((opt) =>
         opt
           .setName('цель')

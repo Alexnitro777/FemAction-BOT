@@ -15,17 +15,16 @@ export class CooldownManager {
 
   /**
    * Проверяет, находится ли команда на кулдауне для данного сервера.
-   * @returns Объект с оставшимся временем и timestamp, или null если кулдаун истёк
+   * @returns Объект с оставшимся временем в секундах, или null если кулдаун истёк
    */
-  check(guildId: string, commandName: string): { seconds: number; ms: number; timestamp: number } | null {
+  check(guildId: string, commandName: string): { seconds: number } | null {
     const guildCooldowns = this.cooldowns.get(guildId);
     if (!guildCooldowns) return null;
 
     const lastUsed = guildCooldowns.get(commandName);
     if (!lastUsed) return null;
 
-    const now = Date.now();
-    const elapsed = now - lastUsed;
+    const elapsed = Date.now() - lastUsed;
 
     if (elapsed >= this.cooldownTime) {
       guildCooldowns.delete(commandName);
@@ -33,16 +32,7 @@ export class CooldownManager {
     }
 
     const remainingMs = this.cooldownTime - elapsed;
-
-    // Вычисляем точный timestamp окончания кулдауна (округляем вверх)
-    const endTime = lastUsed + this.cooldownTime;
-    const timestamp = Math.ceil(endTime / 1000);
-
-    return {
-      seconds: Math.ceil(remainingMs / 1000),
-      ms: remainingMs,
-      timestamp
-    };
+    return { seconds: Math.ceil(remainingMs / 1000) };
   }
 
   /**
