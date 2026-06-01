@@ -9,10 +9,6 @@ const action: ActionDefinition = {
   selfTemplate: '{author} гладит сам(а) себя по головке, какой(ая) молодец.',
   requireTarget: false,
   color: 0xa6e3a1,
-  gifs: [
-    'https://media.tenor.com/example-pat-1.gif',
-    'https://media.tenor.com/example-pat-2.gif',
-  ],
 };
 
 export default action;

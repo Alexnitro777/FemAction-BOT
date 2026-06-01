@@ -9,8 +9,8 @@ import { loadActions } from './loadActions.js';
 
 /**
  * Регистрирует слеш-команды в Discord.
- * Если задан GUILD_ID — регистрирует на сервере (мгновенно, для разработки),
- * иначе глобально (обновляется до часа).
+ * Если задан guildId (config.json) — регистрирует на сервере (мгновенно, для
+ * разработки), иначе глобально (обновляется до часа).
  */
 async function deploy() {
   const { actions } = await loadActions();

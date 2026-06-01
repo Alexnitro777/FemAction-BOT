@@ -19,16 +19,20 @@ Discord-бот с РП-командами. Поддерживает и текс�
    cd FemAction-BOT
    ```
 
-2. **Настрой переменные окружения:**
+2. **Настрой конфиг:**
    ```bash
-   cp .env.example .env
+   cp config.example.json config.json
    ```
-   
-   Отредактируй `.env` и заполни:
-   - `DISCORD_TOKEN` — токен бота
-   - `CLIENT_ID` — Application ID
-   - `GUILD_ID` — ID тестового сервера (опционально)
-   - `PREFIX` — префикс текстовых команд (по умолчанию `!`)
+
+   Отредактируй `config.json`. В секции `discord` заполни:
+   - `token` — токен бота
+   - `clientId` — Application ID
+   - `guildId` — ID тестового сервера (опционально, оставь пустым для глобальной регистрации)
+   - `prefix` — префикс текстовых команд (по умолчанию `!`)
+
+   В секциях `gifs` и `silly` укажи ссылки на гифки (см. раздел
+   "Как добавить или изменить гифки"). `config.json` не коммитится в git и
+   монтируется в контейнер как volume.
 
 3. **Зарегистрируй слеш-команды:**
    ```bash
@@ -63,8 +67,8 @@ docker compose down -v
 
 1. Создай приложение и бота в [Discord Developer Portal](https://discord.com/developers/applications).
 2. На вкладке **Bot** включи **Message Content Intent** (нужен для текстовых команд).
-3. Скопируй **Token** (это будет `DISCORD_TOKEN`).
-4. На вкладке **OAuth2** скопируй **Application ID** (это будет `CLIENT_ID`).
+3. Скопируй **Token** (это будет `token`).
+4. На вкладке **OAuth2** скопируй **Application ID** (это будет `clientId`).
 5. Пригласи бота на сервер:
    - Перейди в **OAuth2 → URL Generator**
    - Выбери scope: `bot` и `applications.commands`
@@ -85,11 +89,19 @@ const action: ActionDefinition = {
   description: 'Шлёпнуть пользователя',
   template: '{author} шлёпнул(а) {target} 👋',
   selfTemplate: '{author} шлёпает воздух',
-  gifs: ['https://media.tenor.com/....gif'],
 };
 
 export default action;
 ```
+
+   Гифки в файле действия задавать не нужно — они берутся из `config.json`.
+   Добавь массив с именем команды в секцию `gifs`:
+
+   ```json
+   "gifs": {
+     "slap": ["https://media.tenor.com/....gif"]
+   }
+   ```
 
 2. Зарегистрируй новую команду:
    ```bash
@@ -102,6 +114,32 @@ export default action;
    ```
 
 Плейсхолдеры в шаблонах: `{author}` — автор, `{target}` — упомянутый пользователь.
+
+## Как добавить или изменить гифки
+
+Все гифки лежат в `config.json` — править код и пересобирать проект не нужно,
+достаточно отредактировать файл и перезапустить бота.
+
+- **Обычные команды** (`kiss`, `hug`, `pat`, `bite`, `boop` и т.п.) — массив URL
+  в секции `gifs` под ключом, равным имени команды (`name`). Из массива при
+  каждом вызове выбирается случайная гифка:
+
+  ```json
+  "gifs": {
+    "kiss": [
+      "https://media.tenor.com/первая.gif",
+      "https://media.tenor.com/вторая.gif"
+    ]
+  }
+  ```
+
+- **Силлимер** (`silly`) использует 6 пулов гифок по уровням в секции `silly`:
+  `genius` (значение 0), `absolute` (значение 100), `smart`, `average`, `silly`,
+  `veryDumb` (промежуточные тиры). Добавляй ссылки в нужный пул.
+
+После изменения `config.json` перезапусти бота:
+- локально — перезапусти `npm run dev` / `npm start`;
+- в Docker — `docker compose restart` (пересборка не нужна, файл смонтирован как volume).
 
 ## Разработка без Docker
 
@@ -130,9 +168,11 @@ src/
   commands/       утилитарные команды (help и т.п.)
   events/         обработчики messageCreate и interactionCreate
   lib/            загрузчик действий, построитель ответа, деплой команд
-  config.ts       чтение .env
+  config.ts       чтение config.json
   types.ts        интерфейсы ActionDefinition / UtilityCommand
   index.ts        точка входа
+config.json       настройки бота и гифки (не в git, монтируется в Docker)
+config.example.json  шаблон конфига
 ```
 
 ## Troubleshooting
@@ -144,10 +184,10 @@ src/
 
 ### Слеш-команды не появляются
 - Запусти регистрацию команд: `docker compose run --rm femaction-bot npm run deploy:prod`
-- Если указан `GUILD_ID`, команды появятся мгновенно только на этом сервере
-- Без `GUILD_ID` команды регистрируются глобально (может занять до 1 часа)
+- Если указан `guildId`, команды появятся мгновенно только на этом сервере
+- Без `guildId` команды регистрируются глобально (может занять до 1 часа)
 
 ### Ошибка при запуске контейнера
-- Проверь, что `.env` файл существует и заполнен
+- Проверь, что файл `config.json` существует и заполнен (`token`, `clientId`)
 - Убедись, что Docker запущен
 - Проверь логи: `docker compose logs`

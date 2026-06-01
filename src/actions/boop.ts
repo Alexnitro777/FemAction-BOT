@@ -9,10 +9,6 @@ const action: ActionDefinition = {
   selfTemplate: '{author} бупает воздух... никого нет рядом.',
   requireTarget: false,
   color: 0xffc24b,
-  gifs: [
-    'https://media.tenor.com/example-boop-1.gif',
-    'https://media.tenor.com/example-boop-2.gif',
-  ],
 };
 
 export default action;

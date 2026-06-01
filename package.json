@@ -12,8 +12,7 @@
     "deploy:prod": "node dist/lib/deployCommands.js"
   },
   "dependencies": {
-    "discord.js": "14.26.4",
-    "dotenv": "16.4.7"
+    "discord.js": "14.26.4"
   },
   "devDependencies": {
     "@types/node": "22.10.1",

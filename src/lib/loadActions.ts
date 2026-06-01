@@ -3,6 +3,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, join } from 'node:path';
 import { Collection } from 'discord.js';
 import type { ActionDefinition } from '../types.js';
+import { config } from '../config.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ACTIONS_DIR = join(__dirname, '..', 'actions');
@@ -37,6 +38,10 @@ export async function loadActions(): Promise<{
       console.warn(`[actions] Дубликат имени "${action.name}" в ${file}.`);
       continue;
     }
+
+    // Гифки берём из config.json по имени команды. Действия с кастомной
+    // логикой (напр. silly) выбирают гифки сами и это поле игнорируют.
+    action.gifs = config.gifs[action.name] ?? [];
 
     actions.set(action.name, action);
 

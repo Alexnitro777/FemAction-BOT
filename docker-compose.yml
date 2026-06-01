@@ -4,11 +4,10 @@ services:
     image: femaction-bot:latest
     container_name: femaction-bot
     restart: unless-stopped
-    env_file:
-      - .env
-    # Uncomment if you need to persist data
-    # volumes:
-    #   - ./data:/app/data
+    # Конфиг монтируется как volume: правь config.json на хосте и перезапускай
+    # контейнер (docker compose restart) — пересборка образа не нужна.
+    volumes:
+      - ./config.json:/app/config.json:ro
     environment:
       - NODE_ENV=production
     # Healthcheck (optional)

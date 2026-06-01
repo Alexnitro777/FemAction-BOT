@@ -1,19 +1,68 @@
-import 'dotenv/config';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 
-function required(name: string): string {
-  const value = process.env[name];
+/**
+ * Единый источник настроек бота — файл config.json в корне проекта.
+ * Путь можно переопределить переменной окружения CONFIG_PATH (например, в Docker).
+ * Скопируй config.example.json в config.json и заполни значения.
+ */
+const CONFIG_PATH = resolve(process.cwd(), process.env.CONFIG_PATH || 'config.json');
+
+/** Описание содержимого config.json. */
+interface RawConfig {
+  discord?: {
+    token?: string;
+    clientId?: string;
+    guildId?: string;
+    prefix?: string;
+  };
+  /** Гифки обычных действий: ключ — имя команды (action.name). */
+  gifs?: Record<string, string[]>;
+  /** Пулы гифок силлимера по тирам (genius, absolute, smart, ...). */
+  silly?: Record<string, string[]>;
+}
+
+function loadRawConfig(): RawConfig {
+  let text: string;
+  try {
+    text = readFileSync(CONFIG_PATH, 'utf8');
+  } catch {
+    throw new Error(
+      `Не найден файл конфига ${CONFIG_PATH}. ` +
+        'Скопируй config.example.json в config.json и заполни значения.'
+    );
+  }
+
+  try {
+    return JSON.parse(text) as RawConfig;
+  } catch (err) {
+    throw new Error(
+      `Не удалось разобрать ${CONFIG_PATH}: невалидный JSON. ${(err as Error).message}`
+    );
+  }
+}
+
+function required(value: string | undefined, name: string): string {
   if (!value) {
     throw new Error(
-      `Отсутствует переменная окружения ${name}. Заполни .env по образцу .env.example`
+      `В config.json не заполнено поле discord.${name}. ` +
+        'Заполни его по образцу config.example.json.'
     );
   }
   return value;
 }
 
+const raw = loadRawConfig();
+const discord = raw.discord ?? {};
+
 export const config = {
-  token: required('DISCORD_TOKEN'),
-  clientId: required('CLIENT_ID'),
+  token: required(discord.token, 'token'),
+  clientId: required(discord.clientId, 'clientId'),
   /** Пустая строка => глобальная регистрация слеш-команд. */
-  guildId: process.env.GUILD_ID ?? '',
-  prefix: process.env.PREFIX || '!',
+  guildId: discord.guildId ?? '',
+  prefix: discord.prefix || '!',
+  /** Гифки обычных действий по имени команды. */
+  gifs: raw.gifs ?? {},
+  /** Пулы гифок силлимера. */
+  silly: raw.silly ?? {},
 } as const;
