@@ -7,56 +7,39 @@
   },
   "gifs": {
     "kiss": [
-      "https://media.tenor.com/example-kiss-1.gif",
-      "https://media.tenor.com/example-kiss-2.gif"
+      "https://media.tenor.com/example-kiss-1.gif"
     ],
     "hug": [
-      "https://media.tenor.com/example-hug-1.gif",
-      "https://media.tenor.com/example-hug-2.gif"
+      "https://media.tenor.com/example-hug-1.gif"
     ],
     "pat": [
-      "https://media.tenor.com/example-pat-1.gif",
-      "https://media.tenor.com/example-pat-2.gif"
+      "https://media.tenor.com/example-pat-1.gif"
     ],
     "bite": [
-      "https://media.tenor.com/example-bite-1.gif",
-      "https://media.tenor.com/example-bite-2.gif"
+      "https://media.tenor.com/example-bite-1.gif"
     ],
     "boop": [
-      "https://media.tenor.com/example-boop-1.gif",
-      "https://media.tenor.com/example-boop-2.gif"
+      "https://media.tenor.com/example-boop-1.gif"
     ]
   },
   "silly": {
     "genius": [
-      "https://media.tenor.com/example-silly-1.gif",
-      "https://media.tenor.com/example-silly-2.gif",
-      "https://media.tenor.com/example-silly-3.gif"
+      "https://media.tenor.com/example-silly-1.gif"
     ],
     "absolute": [
-      "https://media.tenor.com/example-silly-4.gif",
-      "https://media.tenor.com/example-silly-5.gif",
-      "https://media.tenor.com/example-silly-6.gif"
+      "https://media.tenor.com/example-silly-1.gif"
     ],
     "smart": [
-      "https://media.tenor.com/example-silly-7.gif",
-      "https://media.tenor.com/example-silly-8.gif",
-      "https://media.tenor.com/example-silly-9.gif"
+      "https://media.tenor.com/example-silly-1.gif"
     ],
     "average": [
-      "https://media.tenor.com/example-silly-10.gif",
-      "https://media.tenor.com/example-silly-11.gif",
-      "https://media.tenor.com/example-silly-12.gif"
+      "https://media.tenor.com/example-silly-1.gif"
     ],
     "silly": [
-      "https://media.tenor.com/example-silly-13.gif",
-      "https://media.tenor.com/example-silly-14.gif",
-      "https://media.tenor.com/example-silly-15.gif"
+      "https://media.tenor.com/example-silly-1.gif"
     ],
     "veryDumb": [
-      "https://media.tenor.com/example-silly-16.gif",
-      "https://media.tenor.com/example-silly-17.gif",
-      "https://media.tenor.com/example-silly-18.gif"
+      "https://media.tenor.com/example-silly-1.gif"
     ]
   }
 }

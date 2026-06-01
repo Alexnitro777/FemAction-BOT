@@ -5,8 +5,12 @@ import { resolve } from 'node:path';
  * Единый источник настроек бота — файл config.json в корне проекта.
  * Путь можно переопределить переменной окружения CONFIG_PATH (например, в Docker).
  * Скопируй config.example.json в config.json и заполни значения.
+ *
+ * Здесь читаются статичные настройки (секреты, prefix), применяемые при старте.
+ * Гифки читаются «вживую» отдельно (см. lib/gifStore.ts), поэтому их можно
+ * менять в config.json без перезапуска бота.
  */
-const CONFIG_PATH = resolve(process.cwd(), process.env.CONFIG_PATH || 'config.json');
+export const CONFIG_PATH = resolve(process.cwd(), process.env.CONFIG_PATH || 'config.json');
 
 /** Описание содержимого config.json. */
 interface RawConfig {
@@ -61,8 +65,4 @@ export const config = {
   /** Пустая строка => глобальная регистрация слеш-команд. */
   guildId: discord.guildId ?? '',
   prefix: discord.prefix || '!',
-  /** Гифки обычных действий по имени команды. */
-  gifs: raw.gifs ?? {},
-  /** Пулы гифок силлимера. */
-  silly: raw.silly ?? {},
 } as const;

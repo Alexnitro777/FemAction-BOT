@@ -1,5 +1,6 @@
 import { EmbedBuilder } from 'discord.js';
 import type { ActionDefinition } from '../types.js';
+import { getGifs } from './gifStore.js';
 
 const DEFAULT_COLOR = 0xff7fa5;
 
@@ -58,7 +59,8 @@ export function buildActionResponse(
     text = fill(action.template, authorMention, authorMention);
   }
 
-  const gif = pickRandom(action.gifs);
+  // Гифки читаются «вживую» из config.json по имени команды (hot-reload).
+  const gif = pickRandom(getGifs(action.name));
   if (!gif) {
     return { content: text, embed: null };
   }
