@@ -1,7 +1,7 @@
 import type { ActionDefinition } from '../types.js';
 
 const action: ActionDefinition = {
-  name: 'kiss',
+  name: 'поцеловать',
   textName: 'поцеловать',
   aliases: ['kiss'],
   description: 'Поцеловать пользователя',

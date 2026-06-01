@@ -40,9 +40,9 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
 }
 
 const command: UtilityCommand = {
-  name: 'help',
-  textName: 'help',
-  aliases: ['commands'],
+  name: 'хелп',
+  textName: 'хелп',
+  aliases: ['help'],
   description: 'Список доступных РП-команд.',
   executeText: async (message) => {
     if (!message.channel.isSendable()) return;

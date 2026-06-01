@@ -6,20 +6,26 @@
     "prefix": "!"
   },
   "gifs": {
-    "kiss": [
+    "поцеловать": [
       "https://media.tenor.com/example-kiss-1.gif"
     ],
-    "hug": [
+    "обнять": [
       "https://media.tenor.com/example-hug-1.gif"
     ],
-    "pat": [
+    "погладить": [
       "https://media.tenor.com/example-pat-1.gif"
     ],
-    "bite": [
+    "кусь": [
       "https://media.tenor.com/example-bite-1.gif"
     ],
-    "boop": [
+    "буп": [
       "https://media.tenor.com/example-boop-1.gif"
+    ],
+    "шлепнуть": [
+      "https://media.tenor.com/example-slap-1.gif"
+    ],
+    "лизнуть": [
+      "https://media.tenor.com/example-lick-1.gif"
     ]
   },
   "silly": {

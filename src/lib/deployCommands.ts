@@ -37,7 +37,7 @@ async function deploy() {
   // Утилитарные команды.
   body.push(
     new SlashCommandBuilder()
-      .setName('help')
+      .setName('хелп')
       .setDescription('Список доступных РП-команд')
       .toJSON()
   );
