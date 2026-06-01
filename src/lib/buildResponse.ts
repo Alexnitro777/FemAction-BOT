@@ -1,14 +1,8 @@
 import { EmbedBuilder } from 'discord.js';
 import type { ActionDefinition } from '../types.js';
-import { getGifs } from './gifStore.js';
+import { pickGif } from './gifStore.js';
 
 const DEFAULT_COLOR = 0xff7fa5;
-
-/** Случайный элемент массива или undefined для пустого. */
-export function pickRandom<T>(arr: T[] | undefined): T | undefined {
-  if (!arr || arr.length === 0) return undefined;
-  return arr[Math.floor(Math.random() * arr.length)];
-}
 
 /**
  * Подставляет {author} и {target} в шаблон.
@@ -59,8 +53,9 @@ export function buildActionResponse(
     text = fill(action.template, authorMention, authorMention);
   }
 
-  // Гифки читаются «вживую» из config.json по имени команды (hot-reload).
-  const gif = pickRandom(getGifs(action.name));
+  // Гифки читаются «вживую» из config.json по имени команды (hot-reload),
+  // и одна и та же не выпадает два раза подряд.
+  const gif = pickGif(action.name);
   if (!gif) {
     return { content: text, embed: null };
   }

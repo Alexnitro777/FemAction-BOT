@@ -1,5 +1,5 @@
 import type { ActionDefinition } from '../types.js';
-import { getSillyPool } from '../lib/gifStore.js';
+import { pickSillyGif } from '../lib/gifStore.js';
 
 /**
  * Действие "silly" - случайная оценка глупости/гениальности пользователя.
@@ -28,11 +28,9 @@ const TIERS: { max: number; phrase: string; color: number; pool: SillyPool }[] =
   { max: 99, phrase: 'Критический уровень глупости!!!', color: 0xff0000, pool: 'veryDumb' },
 ];
 
-/** Случайная гифка из пула config.json. Пустой/отсутствующий пул => undefined. */
+/** Случайная гифка из пула config.json (без повтора подряд). */
 function pick(pool: SillyPool): string | undefined {
-  const gifs = getSillyPool(pool);
-  if (gifs.length === 0) return undefined;
-  return gifs[Math.floor(Math.random() * gifs.length)];
+  return pickSillyGif(pool);
 }
 
 const action: ActionDefinition = {

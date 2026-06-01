@@ -90,3 +90,39 @@ export function getSillyPool(pool: string): string[] {
   refreshIfChanged();
   return silly[pool] ?? [];
 }
+
+/** Последний показанный индекс по ключу — чтобы не повторять гифку подряд. */
+const lastIndex: Record<string, number> = {};
+
+/**
+ * Случайная гифка из списка, но НЕ та же, что в прошлый раз для этого ключа.
+ * При 1 элементе возвращает его; при 2+ гарантированно отличается от предыдущей
+ * и распределена равномерно по остальным вариантам.
+ */
+function pickFrom(key: string, list: string[]): string | undefined {
+  const n = list.length;
+  if (n === 0) return undefined;
+  if (n === 1) return list[0];
+
+  const prev = lastIndex[key];
+  let i: number;
+  if (prev === undefined || prev >= n) {
+    i = Math.floor(Math.random() * n);
+  } else {
+    // Выбираем равномерно среди n-1 вариантов и «перешагиваем» прошлый индекс.
+    i = Math.floor(Math.random() * (n - 1));
+    if (i >= prev) i++;
+  }
+  lastIndex[key] = i;
+  return list[i];
+}
+
+/** Случайная гифка действия (без повтора подряд). */
+export function pickGif(name: string): string | undefined {
+  return pickFrom(`gifs:${name}`, getGifs(name));
+}
+
+/** Случайная гифка силлимера из пула тира (без повтора подряд). */
+export function pickSillyGif(pool: string): string | undefined {
+  return pickFrom(`silly:${pool}`, getSillyPool(pool));
+}
