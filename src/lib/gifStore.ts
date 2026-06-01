@@ -15,13 +15,45 @@ let cachedMtimeMs = -1;
 let gifs: Record<string, string[]> = {};
 let silly: Record<string, string[]> = {};
 
+/** http(s)-ссылка, которую Discord примет в setImage. */
+function isHttpUrl(value: unknown): value is string {
+  if (typeof value !== 'string') return false;
+  try {
+    const u = new URL(value);
+    return u.protocol === 'http:' || u.protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Оставляет в каждом списке только корректные URL. Битые ссылки отсекаются и
+ * логируются: иначе одна некорректная ссылка ломала бы setImage() и команда
+ * молча не отправлялась бы (создавая иллюзию «всегда первая гифка»).
+ */
+function sanitize(map: Record<string, string[]> | undefined): Record<string, string[]> {
+  const out: Record<string, string[]> = {};
+  for (const [key, list] of Object.entries(map ?? {})) {
+    const valid: string[] = [];
+    for (const url of list ?? []) {
+      if (isHttpUrl(url)) {
+        valid.push(url);
+      } else {
+        console.warn(`[gifs] Пропускаю некорректный URL в "${key}": ${JSON.stringify(url)}`);
+      }
+    }
+    out[key] = valid;
+  }
+  return out;
+}
+
 function reload(): void {
   const raw = JSON.parse(readFileSync(CONFIG_PATH, 'utf8')) as {
     gifs?: Record<string, string[]>;
     silly?: Record<string, string[]>;
   };
-  gifs = raw.gifs ?? {};
-  silly = raw.silly ?? {};
+  gifs = sanitize(raw.gifs);
+  silly = sanitize(raw.silly);
 }
 
 /** Перечитывает config.json, если он изменился с прошлого обращения. */
