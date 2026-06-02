@@ -43,7 +43,7 @@ sh get-docker.sh
 1. **Клонируй репозиторий:**
 
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Alexnitro777/FemAction-BOT.git
    cd FemAction-BOT
    ```
 
