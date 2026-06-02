@@ -4,15 +4,7 @@ services:
     image: femaction-bot:latest
     container_name: femaction-bot
     restart: unless-stopped
-    # Конфиг монтируется как volume: правь config.json на хосте и перезапускай
-    # контейнер (docker compose restart) — пересборка образа не нужна.
     volumes:
       - ./config.json:/app/config.json:ro
     environment:
       - NODE_ENV=production
-    # Healthcheck (optional)
-    # healthcheck:
-    #   test: ["CMD", "node", "-e", "process.exit(0)"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3

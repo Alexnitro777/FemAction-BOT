@@ -4,25 +4,15 @@ import { pickGif } from './gifStore.js';
 
 const DEFAULT_COLOR = 0xff7fa5;
 
-/**
- * Подставляет {author} и {target} в шаблон.
- * Имена передаются уже в виде упоминаний (<@id>) или отображаемых имён.
- */
 function fill(template: string, author: string, target: string): string {
   return template.replaceAll('{author}', author).replaceAll('{target}', target);
 }
 
-/**
- * Строит текст и эмбед для РП-действия.
- * authorMention / targetMention — строки-упоминания. targetMention пустая,
- * если цель не указана.
- */
 export function buildActionResponse(
   action: ActionDefinition,
   authorMention: string,
   targetMention: string | null
 ): { content: string; embed: EmbedBuilder | null } {
-  // Если есть кастомная логика генерации embed
   if (action.customEmbed) {
     const customData = action.customEmbed(authorMention, targetMention);
     const embed = new EmbedBuilder()
@@ -42,7 +32,6 @@ export function buildActionResponse(
     return { content: '', embed };
   }
 
-  // Стандартная логика для обычных РП-команд
   let text: string;
 
   if (targetMention) {
@@ -53,8 +42,10 @@ export function buildActionResponse(
     text = fill(action.template, authorMention, authorMention);
   }
 
-  // Гифки читаются «вживую» из config.json по имени команды (hot-reload),
-  // и одна и та же не выпадает два раза подряд.
+  if (!text) {
+    text = `${authorMention} ${action.name}`;
+  }
+
   const gif = pickGif(action.name);
   if (!gif) {
     return { content: text, embed: null };

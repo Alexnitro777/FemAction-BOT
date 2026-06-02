@@ -4,7 +4,7 @@ const action: ActionDefinition = {
   name: 'кусь',
   textName: 'кусь',
   aliases: ['bite'],
-  description: 'УКусить пользователя',
+  description: 'Укусить пользователя',
   template: '{author} кусьнул(а) {target}.',
   selfTemplate: '{author} кусает себя за хвост.',
   requireTarget: false,

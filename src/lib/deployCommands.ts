@@ -6,12 +6,8 @@ import {
 } from 'discord.js';
 import { config } from '../config.js';
 import { loadActions } from './loadActions.js';
+import helpCommand from '../commands/help.js';
 
-/**
- * Регистрирует слеш-команды в Discord.
- * Если задан guildId (config.json) — регистрирует на сервере (мгновенно, для
- * разработки), иначе глобально (обновляется до часа).
- */
 async function deploy() {
   const { actions } = await loadActions();
   const body: RESTPostAPIApplicationCommandsJSONBody[] = [];
@@ -21,7 +17,6 @@ async function deploy() {
       .setName(action.name)
       .setDescription(action.description);
 
-    // Добавляем опцию цели только если действие её принимает.
     if (!action.noTarget) {
       builder.addUserOption((opt) =>
         opt
@@ -34,11 +29,10 @@ async function deploy() {
     body.push(builder.toJSON());
   }
 
-  // Утилитарные команды.
   body.push(
     new SlashCommandBuilder()
-      .setName('хелп')
-      .setDescription('Список доступных РП-команд')
+      .setName(helpCommand.name)
+      .setDescription(helpCommand.description)
       .toJSON()
   );
 

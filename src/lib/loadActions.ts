@@ -7,11 +7,6 @@ import type { ActionDefinition } from '../types.js';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ACTIONS_DIR = join(__dirname, '..', 'actions');
 
-/**
- * Загружает все определения действий из src/actions.
- * Каждый .ts/.js файл должен экспортировать ActionDefinition по умолчанию.
- * Возвращает коллекцию действий и индекс текстовых имён/алиасов.
- */
 export async function loadActions(): Promise<{
   actions: Collection<string, ActionDefinition>;
   textIndex: Collection<string, string>;
@@ -40,7 +35,6 @@ export async function loadActions(): Promise<{
 
     actions.set(action.name, action);
 
-    // Индексируем все варианты вызова текстовой команды.
     const names = [action.textName, ...(action.aliases ?? [])];
     for (const n of names) {
       const key = n.toLowerCase();

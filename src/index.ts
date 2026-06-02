@@ -14,8 +14,6 @@ import helpCommand from './commands/help.js';
 import { CooldownManager } from './lib/cooldowns.js';
 
 async function main() {
-  // MessageContent нужен для чтения текстовых команд — включи его
-  // в Developer Portal -> Bot -> Privileged Gateway Intents.
   const client = new Client({
     intents: [
       GatewayIntentBits.Guilds,
@@ -29,14 +27,10 @@ async function main() {
   client.rpActions = actions;
   client.textIndex = textIndex;
 
-  // Инициализируем систему кулдаунов (20 секунд).
   client.cooldowns = new CooldownManager(20);
 
-  // Периодически чистим устаревшие записи, чтобы карта кулдаунов не росла
-  // бесконечно. unref() — чтобы таймер не держал процесс живым сам по себе.
   setInterval(() => client.cooldowns.cleanup(), 5 * 60 * 1000).unref();
 
-  // Регистрируем утилитарные команды.
   client.utility = new Collection<string, UtilityCommand>();
   client.utility.set(helpCommand.name, helpCommand);
   for (const alias of helpCommand.aliases ?? []) {

@@ -1,22 +1,14 @@
 import { Collection } from 'discord.js';
 
-/**
- * Система кулдаунов для команд.
- * Хранит Map<guildId, Map<commandName, timestamp>>
- */
 export class CooldownManager {
   private cooldowns: Collection<string, Collection<string, number>>;
   private readonly cooldownTime: number;
 
   constructor(cooldownSeconds: number = 25) {
     this.cooldowns = new Collection();
-    this.cooldownTime = cooldownSeconds * 1000; // Конвертируем в миллисекунды
+    this.cooldownTime = cooldownSeconds * 1000;
   }
 
-  /**
-   * Проверяет, находится ли команда на кулдауне для данного сервера.
-   * @returns Объект с оставшимся временем в секундах, или null если кулдаун истёк
-   */
   check(guildId: string, commandName: string): { seconds: number } | null {
     const guildCooldowns = this.cooldowns.get(guildId);
     if (!guildCooldowns) return null;
@@ -35,9 +27,6 @@ export class CooldownManager {
     return { seconds: Math.ceil(remainingMs / 1000) };
   }
 
-  /**
-   * Устанавливает кулдаун для команды на сервере.
-   */
   set(guildId: string, commandName: string): void {
     let guildCooldowns = this.cooldowns.get(guildId);
 
@@ -49,9 +38,17 @@ export class CooldownManager {
     guildCooldowns.set(commandName, Date.now());
   }
 
-  /**
-   * Очищает устаревшие кулдауны (опционально, для экономии памяти).
-   */
+  clear(guildId: string, commandName: string): void {
+    const guildCooldowns = this.cooldowns.get(guildId);
+    if (!guildCooldowns) return;
+
+    guildCooldowns.delete(commandName);
+
+    if (guildCooldowns.size === 0) {
+      this.cooldowns.delete(guildId);
+    }
+  }
+
   cleanup(): void {
     const now = Date.now();
 

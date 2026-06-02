@@ -2,9 +2,7 @@ import { EmbedBuilder, MessageFlags } from 'discord.js';
 import type { BotClient, UtilityCommand } from '../types.js';
 import { config } from '../config.js';
 
-/** Собирает эмбед со списком всех РП-команд из загруженных действий. */
 function buildHelpEmbed(client: BotClient): EmbedBuilder {
-  // Разделяем команды на РП-действия и другие
   const rpCommands: string[] = [];
   const otherCommands: string[] = [];
 
@@ -14,7 +12,6 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
       .join(', ');
     const line = `**${a.description}**\n${names} и \`/${a.name}\``;
 
-    // Действия без цели (напр. silly) — не РП-команды, выделяем отдельно.
     if (a.noTarget) {
       otherCommands.push(line);
     } else {

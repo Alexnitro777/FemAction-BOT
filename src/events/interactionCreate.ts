@@ -8,13 +8,11 @@ import type { BotClient } from '../types.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
 import { formatCooldownTime } from '../lib/formatTime.js';
 
-/** Обрабатывает слеш-команды. */
 export function registerInteractionHandler(client: BotClient) {
   client.on(Events.InteractionCreate, async (interaction: Interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     try {
-      // Утилитарные слеш-команды.
       const util = client.utility.get(interaction.commandName);
       if (util?.executeSlash) {
         await util.executeSlash(interaction);
@@ -24,12 +22,11 @@ export function registerInteractionHandler(client: BotClient) {
       const action = client.rpActions.get(interaction.commandName);
       if (!action) return;
 
-      // Проверка кулдауна (только для серверов).
       if (interaction.guildId) {
         const cooldown = client.cooldowns.check(interaction.guildId, action.name);
         if (cooldown) {
           const cooldownEmbed = new EmbedBuilder()
-            .setColor(0xffa500) // Оранжевый цвет
+            .setColor(0xffa500)
             .setTitle('⏱️ Команда на кулдауне!')
             .setDescription(`🕐 Осталось: ${formatCooldownTime(cooldown.seconds)}`);
 
@@ -41,21 +38,16 @@ export function registerInteractionHandler(client: BotClient) {
         }
       }
 
-      const target = action.noTarget
+      const mentioned = action.noTarget
         ? null
         : interaction.options.getUser('цель');
 
-      // Проверка: нельзя выбрать себя в качестве цели.
-      if (target && target.id === interaction.user.id) {
-        const errorEmbed = new EmbedBuilder()
-          .setColor(0xff0000) // Красный цвет
-          .setTitle('❌ Ошибка!')
-          .setDescription(
-            'Вы не можете выбрать себя в качестве цели для этой команды!'
-          );
+      const target =
+        mentioned && mentioned.id === interaction.user.id ? null : mentioned;
 
+      if (action.requireTarget && !target) {
         await interaction.reply({
-          embeds: [errorEmbed],
+          content: 'Укажи цель команды.',
           flags: MessageFlags.Ephemeral,
         });
         return;
@@ -70,30 +62,32 @@ export function registerInteractionHandler(client: BotClient) {
         targetMention
       );
 
-      // Резервируем кулдаун перед ответом: между проверкой и установкой нет
-      // await, поэтому два почти одновременных вызова не проскочат оба.
       if (interaction.guildId) {
         client.cooldowns.set(interaction.guildId, action.name);
       }
 
-      await interaction.reply({
-        content: content || undefined,
-        embeds: embed ? [embed] : [],
-        allowedMentions: { parse: ['users'] },
-      });
+      try {
+        await interaction.reply({
+          content: content || undefined,
+          embeds: embed ? [embed] : [],
+          allowedMentions: { parse: ['users'] },
+        });
+      } catch (sendErr) {
+        if (interaction.guildId) {
+          client.cooldowns.clear(interaction.guildId, action.name);
+        }
+        throw sendErr;
+      }
     } catch (err) {
       console.error('Ошибка обработки слеш-команды:', err);
 
-      // Пытаемся сообщить пользователю, если ещё не ответили.
       if (interaction.isRepliable() && !interaction.replied && !interaction.deferred) {
         try {
           await interaction.reply({
             content: 'Произошла ошибка при выполнении команды.',
             flags: MessageFlags.Ephemeral,
           });
-        } catch {
-          // Интеракция могла истечь — игнорируем.
-        }
+        } catch {}
       }
     }
   });
