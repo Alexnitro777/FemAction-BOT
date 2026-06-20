@@ -7,6 +7,7 @@ import {
 import { config } from '../config.js';
 import { loadActions } from './loadActions.js';
 import helpCommand from '../commands/help.js';
+import statisticsCommand from '../commands/statistics.js';
 
 async function deploy() {
   const { actions } = await loadActions();
@@ -33,6 +34,19 @@ async function deploy() {
     new SlashCommandBuilder()
       .setName(helpCommand.name)
       .setDescription(helpCommand.description)
+      .toJSON()
+  );
+
+  body.push(
+    new SlashCommandBuilder()
+      .setName(statisticsCommand.name)
+      .setDescription(statisticsCommand.description)
+      .addUserOption((opt) =>
+        opt
+          .setName('цель')
+          .setDescription('Чью статистику показать (по умолчанию — твою)')
+          .setRequired(false)
+      )
       .toJSON()
   );
 

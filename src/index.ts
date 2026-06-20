@@ -10,8 +10,14 @@ import type { UtilityCommand } from './types.js';
 import { loadActions } from './lib/loadActions.js';
 import { registerMessageHandler } from './events/messageCreate.js';
 import { registerInteractionHandler } from './events/interactionCreate.js';
+import {
+  registerActivityHandlers,
+  flushVoiceSessions,
+} from './events/activity.js';
 import helpCommand from './commands/help.js';
+import statisticsCommand from './commands/statistics.js';
 import { CooldownManager } from './lib/cooldowns.js';
+import { loadStats, startAutoFlush, flushStats } from './lib/statsStore.js';
 
 async function main() {
   const client = new Client({
@@ -19,9 +25,13 @@ async function main() {
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
       GatewayIntentBits.MessageContent,
+      GatewayIntentBits.GuildVoiceStates,
     ],
     partials: [Partials.Channel],
   });
+
+  loadStats();
+  startAutoFlush();
 
   const { actions, textIndex } = await loadActions();
   client.rpActions = actions;
@@ -32,17 +42,28 @@ async function main() {
   setInterval(() => client.cooldowns.cleanup(), 5 * 60 * 1000).unref();
 
   client.utility = new Collection<string, UtilityCommand>();
-  client.utility.set(helpCommand.name, helpCommand);
-  for (const alias of helpCommand.aliases ?? []) {
-    client.utility.set(alias, helpCommand);
+  for (const util of [helpCommand, statisticsCommand]) {
+    client.utility.set(util.name, util);
+    for (const alias of util.aliases ?? []) {
+      client.utility.set(alias, util);
+    }
   }
 
   registerMessageHandler(client);
   registerInteractionHandler(client);
+  registerActivityHandlers(client);
 
   client.once(Events.ClientReady, (c) => {
     console.log(`Бот запущен как ${c.user.tag}`);
   });
+
+  const shutdown = () => {
+    flushVoiceSessions();
+    flushStats();
+    process.exit(0);
+  };
+  process.once('SIGINT', shutdown);
+  process.once('SIGTERM', shutdown);
 
   await client.login(config.token);
 }

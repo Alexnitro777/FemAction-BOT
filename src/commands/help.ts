@@ -19,6 +19,19 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
     }
   });
 
+  const utilCommands: string[] = [];
+  const seen = new Set<string>();
+  client.utility.forEach((u) => {
+    if (seen.has(u.name)) return;
+    seen.add(u.name);
+
+    const triggers = [u.textName, ...(u.aliases ?? [])]
+      .map((n) => `\`${config.prefix}${n}\``)
+      .join(', ');
+    const slash = u.executeSlash ? ` и \`/${u.name}\`` : '';
+    utilCommands.push(`**${u.description}**\n${triggers}${slash}`);
+  });
+
   const rpSection = rpCommands.length > 0
     ? `**🎭 РП-команды:**\n${rpCommands.join('\n\n')}`
     : '';
@@ -27,7 +40,11 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
     ? `**🎲 Другие команды:**\n${otherCommands.join('\n\n')}`
     : '';
 
-  const description = [rpSection, otherSection].filter(s => s).join('\n\n');
+  const utilSection = utilCommands.length > 0
+    ? `**🛠️ Утилиты:**\n${utilCommands.join('\n\n')}`
+    : '';
+
+  const description = [rpSection, otherSection, utilSection].filter(s => s).join('\n\n');
 
   return new EmbedBuilder()
     .setTitle('Список команд')

@@ -47,5 +47,21 @@
     "veryDumb": [
       "https://media.tenor.com/example-silly-1.gif"
     ]
+  },
+  "rewards": {
+    "messageRoles": [
+      { "count": 1500, "roleId": "" },
+      { "count": 3500, "roleId": "" },
+      { "count": 5500, "roleId": "" },
+      { "count": 10000, "roleId": "" },
+      { "count": 15000, "roleId": "" }
+    ],
+    "voiceRoles": [
+      { "hours": 100, "roleId": "" }
+    ],
+    "voice": {
+      "ignoreAfkChannel": true,
+      "ignoreDeafened": true
+    }
   }
 }

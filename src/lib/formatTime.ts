@@ -16,6 +16,23 @@ export function formatCooldownTime(seconds: number): string {
   return `${minuteStr} ${secondStr}`;
 }
 
+export function formatMessageCount(n: number): string {
+  return `${n} ${pluralize(n, 'сообщение', 'сообщения', 'сообщений')}`;
+}
+
+export function formatVoiceDuration(ms: number): string {
+  const totalMinutes = Math.max(0, Math.floor(ms / 60000));
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  const parts: string[] = [];
+  if (hours > 0) {
+    parts.push(`${hours} ${pluralize(hours, 'час', 'часа', 'часов')}`);
+  }
+  parts.push(`${minutes} ${pluralize(minutes, 'минута', 'минуты', 'минут')}`);
+  return parts.join(' ');
+}
+
 function pluralize(n: number, one: string, few: string, many: string): string {
   const mod10 = n % 10;
   const mod100 = n % 100;
