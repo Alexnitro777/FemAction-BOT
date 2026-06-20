@@ -3,7 +3,11 @@ import type { UtilityCommand } from '../types.js';
 import { getStats } from '../lib/statsStore.js';
 import { getActiveVoiceMs } from '../events/activity.js';
 import { getMessageRoles, getVoiceRoles } from '../lib/rewardsConfig.js';
-import { formatMessageCount, formatVoiceDuration } from '../lib/formatTime.js';
+import {
+  formatMessageCount,
+  formatVoiceDuration,
+  formatVoiceThreshold,
+} from '../lib/formatTime.js';
 
 const HOUR_MS = 60 * 60 * 1000;
 
@@ -35,7 +39,7 @@ function buildStatsEmbed(guildId: string, user: User): EmbedBuilder {
     const remainingMs = nextVoice.hours * HOUR_MS - totalVoiceMs;
     embed.addFields({
       name: '⬆️ Следующая роль за голос',
-      value: `Ещё ${formatVoiceDuration(remainingMs)} (до ${nextVoice.hours} ч)`,
+      value: `Ещё ${formatVoiceDuration(remainingMs)} (до ${formatVoiceThreshold(nextVoice.hours)})`,
     });
   }
 

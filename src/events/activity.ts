@@ -7,7 +7,7 @@ import {
   getVoiceRules,
 } from '../lib/rewardsConfig.js';
 
-const VOICE_TICK_MS = 5 * 60 * 1000;
+const VOICE_TICK_MS = 60 * 1000;
 const HOUR_MS = 60 * 60 * 1000;
 
 const activeSessions = new Map<string, { startedAt: number }>();
