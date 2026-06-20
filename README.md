@@ -18,7 +18,7 @@ FemAction-BOT/
 │   └── index.ts        Точка входа
 ├── config.example.json Шаблон конфига (токен, prefix, гифки, награды за активность)
 ├── config.json         Реальный конфиг (не в git, монтируется в Docker как volume)
-├── data/               Статистика активности (stats.json, не в git, writable-volume)
+├── data/               Статистика активности (stats.db, SQLite, не в git, writable-volume)
 ├── Dockerfile          Multi-stage сборка образа (node:24-slim)
 ├── docker-compose.yml  Описание сервиса femaction-bot
 ├── tsconfig.json       Настройки TypeScript
@@ -89,7 +89,9 @@ docker compose down
 > `config.json` подхватываются «вживую» без перезапуска. Перезапуск нужен только при
 > изменении секретов (`token`, `clientId`, `prefix`), а пересборка — при изменении кода
 > или добавлении новых команд в `src/actions`. Статистика активности хранится в
-> `./data/stats.json` (смонтирована как volume) и переживает перезапуск контейнера.
+> локальной базе SQLite `./data/stats.db` (смонтирована как volume) и переживает
+> перезапуск контейнера. Если рядом лежит старый `./data/stats.json`, он один раз
+> автоматически импортируется в базу и переименовывается в `stats.json.bak`.
 
 ## 4. Награды за активность (автовыдача ролей)
 
