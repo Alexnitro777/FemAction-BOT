@@ -7,14 +7,20 @@ import {
   getVoiceRules,
   getRemoveUnearnedRoles,
 } from '../lib/rewardsConfig.js';
+import { config } from '../config.js';
 
 const VOICE_TICK_MS = 60 * 1000;
 const HOUR_MS = 60 * 60 * 1000;
 
 const activeSessions = new Map<string, { startedAt: number }>();
+const missingRoleWarned = new Set<string>();
 
 function sessionKey(guildId: string, userId: string): string {
   return `${guildId}:${userId}`;
+}
+
+function inScope(guildId: string): boolean {
+  return !config.guildId || guildId === config.guildId;
 }
 
 function counts(state: VoiceState): boolean {
@@ -31,8 +37,31 @@ function counts(state: VoiceState): boolean {
   return true;
 }
 
+function ensureRoleExists(member: GuildMember, roleId: string): boolean {
+  if (member.guild.roles.cache.has(roleId)) return true;
+  const key = `${member.guild.id}:${roleId}`;
+  if (!missingRoleWarned.has(key)) {
+    missingRoleWarned.add(key);
+    console.warn(
+      `[rewards] Роль ${roleId} не найдена на сервере ${member.guild.id} — пропускаю выдачу. ` +
+        'Проверь ID роли в config.json (rewards).'
+    );
+  }
+  return false;
+}
+
+function describeRoleError(err: unknown): string {
+  const e = err as { code?: number; message?: string };
+  const base = `${e?.message ?? String(err)}${e?.code !== undefined ? ` (код ${e.code})` : ''}`;
+  if (e?.code === 50013) {
+    return `${base}. Проверь право «Управление ролями» и иерархию ролей бота`;
+  }
+  return base;
+}
+
 async function grantRole(member: GuildMember, roleId: string): Promise<void> {
   if (!roleId || member.roles.cache.has(roleId)) return;
+  if (!ensureRoleExists(member, roleId)) return;
 
   try {
     await member.roles.add(roleId);
@@ -41,8 +70,7 @@ async function grantRole(member: GuildMember, roleId: string): Promise<void> {
     );
   } catch (err) {
     console.warn(
-      `[rewards] Не удалось выдать роль ${roleId} пользователю ${member.id}: ` +
-        `${(err as Error).message}. Проверь право «Управление ролями» и иерархию ролей бота.`
+      `[rewards] Не удалось выдать роль ${roleId} пользователю ${member.id}: ${describeRoleError(err)}.`
     );
   }
 }
@@ -57,8 +85,7 @@ async function revokeRole(member: GuildMember, roleId: string): Promise<void> {
     );
   } catch (err) {
     console.warn(
-      `[rewards] Не удалось снять роль ${roleId} у пользователя ${member.id}: ` +
-        `${(err as Error).message}. Проверь право «Управление ролями» и иерархию ролей бота.`
+      `[rewards] Не удалось снять роль ${roleId} у пользователя ${member.id}: ${describeRoleError(err)}.`
     );
   }
 }
@@ -106,6 +133,8 @@ async function handleVoiceStateUpdate(
   newState: VoiceState
 ): Promise<void> {
   const guildId = newState.guild.id;
+  if (!inScope(guildId)) return;
+
   const userId = newState.id;
   const member = newState.member ?? oldState.member;
   const now = Date.now();
@@ -166,6 +195,7 @@ function scanExistingVoice(client: BotClient): void {
   const now = Date.now();
   let started = 0;
   for (const guild of client.guilds.cache.values()) {
+    if (!inScope(guild.id)) continue;
     for (const state of guild.voiceStates.cache.values()) {
       if (counts(state)) {
         activeSessions.set(sessionKey(guild.id, state.id), { startedAt: now });
@@ -180,7 +210,7 @@ function scanExistingVoice(client: BotClient): void {
 
 export function registerActivityHandlers(client: BotClient): void {
   client.on(Events.MessageCreate, async (message: Message) => {
-    if (message.author.bot || !message.guildId) return;
+    if (message.author.bot || !message.guildId || !inScope(message.guildId)) return;
 
     try {
       const count = addMessage(message.guildId, message.author.id);
