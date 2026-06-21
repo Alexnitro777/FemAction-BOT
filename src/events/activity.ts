@@ -96,25 +96,35 @@ async function revokeRole(member: GuildMember, roleId: string): Promise<void> {
   }
 }
 
-async function syncMessageRoles(member: GuildMember, count: number): Promise<void> {
-  const remove = getRemoveUnearnedRoles();
-  for (const role of getMessageRoles()) {
-    if (count >= role.count) {
-      await grantRole(member, role.roleId);
-    } else if (remove) {
-      await revokeRole(member, role.roleId);
-    }
-  }
-}
-
-async function syncVoiceRoles(member: GuildMember, voiceMs: number): Promise<void> {
+async function syncRewardRoles(
+  member: GuildMember,
+  messages: number,
+  voiceMs: number
+): Promise<void> {
   const hours = voiceMs / HOUR_MS;
-  const remove = getRemoveUnearnedRoles();
+  const earned = new Set<string>();
+  const managed = new Set<string>();
+
+  for (const role of getMessageRoles()) {
+    if (!role.roleId) continue;
+    managed.add(role.roleId);
+    if (messages >= role.count) earned.add(role.roleId);
+  }
   for (const role of getVoiceRoles()) {
-    if (hours >= role.hours) {
-      await grantRole(member, role.roleId);
-    } else if (remove) {
-      await revokeRole(member, role.roleId);
+    if (!role.roleId) continue;
+    managed.add(role.roleId);
+    if (hours >= role.hours) earned.add(role.roleId);
+  }
+
+  for (const roleId of earned) {
+    await grantRole(member, roleId);
+  }
+
+  if (getRemoveUnearnedRoles()) {
+    for (const roleId of managed) {
+      if (!earned.has(roleId)) {
+        await revokeRole(member, roleId);
+      }
     }
   }
 }
@@ -147,7 +157,7 @@ async function handleVoiceStateUpdate(
 
   const total = settleSession(guildId, userId, now);
   if (total !== null && member) {
-    await syncVoiceRoles(member, total);
+    await syncRewardRoles(member, getStats(guildId, userId).messages, total);
   }
 
   if (counts(newState)) {
@@ -170,7 +180,7 @@ async function tickVoice(client: BotClient): Promise<void> {
 
     const member = client.guilds.cache.get(guildId)?.members.cache.get(userId);
     if (member) {
-      await syncVoiceRoles(member, total);
+      await syncRewardRoles(member, getStats(guildId, userId).messages, total);
     }
   }
 }
@@ -244,8 +254,7 @@ async function sweepRoles(client: BotClient): Promise<void> {
     if (member.user.bot) continue;
 
     const stats = getStats(config.guildId, userId);
-    await syncMessageRoles(member, stats.messages);
-    await syncVoiceRoles(member, stats.voiceMs);
+    await syncRewardRoles(member, stats.messages, stats.voiceMs);
     checked++;
   }
 
@@ -267,7 +276,8 @@ export function registerActivityHandlers(client: BotClient): void {
     try {
       const count = addMessage(message.guildId, message.author.id);
       if (message.member) {
-        await syncMessageRoles(message.member, count);
+        const { voiceMs } = getStats(message.guildId, message.author.id);
+        await syncRewardRoles(message.member, count, voiceMs);
       }
     } catch (err) {
       console.error('Ошибка учёта сообщения:', err);
