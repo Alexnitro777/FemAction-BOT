@@ -7,7 +7,6 @@ import {
 import type { BotClient } from '../types.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
 import { formatCooldownTime } from '../lib/formatTime.js';
-import { getCommandChannels, isCommandAllowedHere } from '../lib/commandChannels.js';
 
 export function registerInteractionHandler(client: BotClient) {
   client.on(Events.InteractionCreate, async (interaction: Interaction) => {
@@ -16,23 +15,6 @@ export function registerInteractionHandler(client: BotClient) {
     try {
       const util = client.utility.get(interaction.commandName);
       if (util?.executeSlash) {
-        const parentId =
-          interaction.channel && 'parentId' in interaction.channel
-            ? interaction.channel.parentId
-            : null;
-        if (
-          interaction.guildId &&
-          !isCommandAllowedHere(util.name, interaction.channelId, parentId)
-        ) {
-          const channels = getCommandChannels(util.name)
-            .map((id) => `<#${id}>`)
-            .join(', ');
-          await interaction.reply({
-            content: `Эту команду можно использовать только в: ${channels}`,
-            flags: MessageFlags.Ephemeral,
-          });
-          return;
-        }
         await util.executeSlash(interaction);
         return;
       }

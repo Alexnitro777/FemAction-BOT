@@ -2,8 +2,6 @@ import type { ActionDefinition } from '../types.js';
 
 const action: ActionDefinition = {
   name: 'погладить',
-  textName: 'погладить',
-  aliases: ['pat'],
   description: 'Погладить пользователя по головке.',
   template: '{author} гладит {target} по головке.',
   selfTemplate: '{author} гладит сам(а) себя по головке, какой(ая) молодец.',

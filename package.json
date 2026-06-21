@@ -1,7 +1,7 @@
 {
   "name": "femaction-bot",
   "version": "1.0.0",
-  "description": "Discord бот с РП-командами (текстовые + слеш команды)",
+  "description": "Discord бот с РП-командами (слеш-команды)",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

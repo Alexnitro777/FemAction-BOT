@@ -2,8 +2,6 @@ import type { ActionDefinition } from '../types.js';
 
 const action: ActionDefinition = {
   name: 'обнять',
-  textName: 'обнять',
-  aliases: ['hug'],
   description: 'Обнять пользователя',
   template: '{author} крепко обнял(а) {target}.',
   selfTemplate: '{author} обнимает сам(а) себя.',

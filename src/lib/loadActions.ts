@@ -9,10 +9,8 @@ const ACTIONS_DIR = join(__dirname, '..', 'actions');
 
 export async function loadActions(): Promise<{
   actions: Collection<string, ActionDefinition>;
-  textIndex: Collection<string, string>;
 }> {
   const actions = new Collection<string, ActionDefinition>();
-  const textIndex = new Collection<string, string>();
 
   const files = (await readdir(ACTIONS_DIR)).filter(
     (f) => (f.endsWith('.ts') || f.endsWith('.js')) && !f.endsWith('.d.ts')
@@ -34,20 +32,8 @@ export async function loadActions(): Promise<{
     }
 
     actions.set(action.name, action);
-
-    const names = [action.textName, ...(action.aliases ?? [])];
-    for (const n of names) {
-      const key = n.toLowerCase();
-      if (textIndex.has(key)) {
-        console.warn(
-          `[actions] Конфликт текстового имени "${key}" (${file}).`
-        );
-        continue;
-      }
-      textIndex.set(key, action.name);
-    }
   }
 
   console.log(`[actions] Загружено действий: ${actions.size}`);
-  return { actions, textIndex };
+  return { actions };
 }

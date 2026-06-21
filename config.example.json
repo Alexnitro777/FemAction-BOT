@@ -2,8 +2,7 @@
   "discord": {
     "token": "",
     "clientId": "",
-    "guildId": "",
-    "prefix": "!"
+    "guildId": ""
   },
   "gifs": {
     "поцеловать": [
@@ -63,8 +62,5 @@
       "ignoreAfkChannel": true,
       "ignoreDeafened": true
     }
-  },
-  "commandChannels": {
-    "статистика": []
   }
 }

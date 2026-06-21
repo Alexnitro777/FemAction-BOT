@@ -8,7 +8,6 @@ interface RawConfig {
     token?: string;
     clientId?: string;
     guildId?: string;
-    prefix?: string;
   };
   gifs?: Record<string, string[]>;
   silly?: Record<string, string[]>;
@@ -51,5 +50,4 @@ export const config = {
   token: required(discord.token, 'token'),
   clientId: required(discord.clientId, 'clientId'),
   guildId: discord.guildId ?? '',
-  prefix: discord.prefix || '!',
 } as const;

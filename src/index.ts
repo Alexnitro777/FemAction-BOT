@@ -8,7 +8,6 @@ import {
 import { config } from './config.js';
 import type { UtilityCommand } from './types.js';
 import { loadActions } from './lib/loadActions.js';
-import { registerMessageHandler } from './events/messageCreate.js';
 import { registerInteractionHandler } from './events/interactionCreate.js';
 import {
   registerActivityHandlers,
@@ -24,7 +23,6 @@ async function main() {
     intents: [
       GatewayIntentBits.Guilds,
       GatewayIntentBits.GuildMessages,
-      GatewayIntentBits.MessageContent,
       GatewayIntentBits.GuildVoiceStates,
     ],
     partials: [Partials.Channel],
@@ -33,9 +31,8 @@ async function main() {
   loadStats();
   startAutoFlush();
 
-  const { actions, textIndex } = await loadActions();
+  const { actions } = await loadActions();
   client.rpActions = actions;
-  client.textIndex = textIndex;
 
   client.cooldowns = new CooldownManager(20);
 
@@ -44,12 +41,8 @@ async function main() {
   client.utility = new Collection<string, UtilityCommand>();
   for (const util of [helpCommand, statisticsCommand]) {
     client.utility.set(util.name, util);
-    for (const alias of util.aliases ?? []) {
-      client.utility.set(alias, util);
-    }
   }
 
-  registerMessageHandler(client);
   registerInteractionHandler(client);
   registerActivityHandlers(client);
 

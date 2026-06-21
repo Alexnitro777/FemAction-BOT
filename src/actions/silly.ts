@@ -19,8 +19,6 @@ function pick(pool: SillyPool): string | undefined {
 
 const action: ActionDefinition = {
   name: 'силли',
-  textName: 'силли',
-  aliases: ['silly'],
   description: 'Силлимер (0-100)',
   template: '',
   selfTemplate: '',

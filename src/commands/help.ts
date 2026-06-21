@@ -1,16 +1,12 @@
 import { EmbedBuilder, MessageFlags } from 'discord.js';
 import type { BotClient, UtilityCommand } from '../types.js';
-import { config } from '../config.js';
 
 function buildHelpEmbed(client: BotClient): EmbedBuilder {
   const rpCommands: string[] = [];
   const otherCommands: string[] = [];
 
   client.rpActions.forEach((a) => {
-    const names = [a.textName, ...(a.aliases ?? [])]
-      .map((n) => `\`${config.prefix}${n}\``)
-      .join(', ');
-    const line = `**${a.description}**\n${names} и \`/${a.name}\``;
+    const line = `**${a.description}**\n\`/${a.name}\``;
 
     if (a.noTarget) {
       otherCommands.push(line);
@@ -20,16 +16,9 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
   });
 
   const utilCommands: string[] = [];
-  const seen = new Set<string>();
   client.utility.forEach((u) => {
-    if (seen.has(u.name)) return;
-    seen.add(u.name);
-
-    const triggers = [u.textName, ...(u.aliases ?? [])]
-      .map((n) => `\`${config.prefix}${n}\``)
-      .join(', ');
-    const slash = u.executeSlash ? ` и \`/${u.name}\`` : '';
-    utilCommands.push(`**${u.description}**\n${triggers}${slash}`);
+    if (!u.executeSlash) return;
+    utilCommands.push(`**${u.description}**\n\`/${u.name}\``);
   });
 
   const rpSection = rpCommands.length > 0
@@ -55,13 +44,7 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
 
 const command: UtilityCommand = {
   name: 'хелп',
-  textName: 'хелп',
-  aliases: ['help'],
   description: 'Список доступных РП-команд.',
-  executeText: async (message) => {
-    if (!message.channel.isSendable()) return;
-    await message.reply({ embeds: [buildHelpEmbed(message.client)] });
-  },
   executeSlash: async (interaction) => {
     await interaction.reply({
       embeds: [buildHelpEmbed(interaction.client)],

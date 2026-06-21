@@ -48,35 +48,7 @@ function buildStatsEmbed(guildId: string, user: User): EmbedBuilder {
 
 const command: UtilityCommand = {
   name: 'статистика',
-  textName: 'статистика',
-  aliases: ['стата', 'stats'],
   description: 'Статистика активности: сообщения и время в голосовых.',
-  executeText: async (message, args) => {
-    if (!message.guildId || !message.channel.isSendable()) return;
-
-    let user = message.mentions.users.first() ?? null;
-
-    if (!user && args[0]) {
-      const id = args[0].replace(/[<@!>]/g, '');
-      if (!/^\d{17,20}$/.test(id)) {
-        await message.reply('Укажи @пользователя или его ID.');
-        return;
-      }
-      try {
-        user = await message.client.users.fetch(id);
-      } catch {
-        await message.reply('Не нашёл пользователя с таким ID.');
-        return;
-      }
-    }
-
-    user = user ?? message.author;
-
-    await message.reply({
-      embeds: [buildStatsEmbed(message.guildId, user)],
-      allowedMentions: { parse: [] },
-    });
-  },
   executeSlash: async (interaction) => {
     if (!interaction.guildId) {
       await interaction.reply({
@@ -91,6 +63,7 @@ const command: UtilityCommand = {
     await interaction.reply({
       embeds: [buildStatsEmbed(interaction.guildId, user)],
       allowedMentions: { parse: [] },
+      flags: MessageFlags.Ephemeral,
     });
   },
 };
