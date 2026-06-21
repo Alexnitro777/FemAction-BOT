@@ -58,6 +58,7 @@
     "voiceRoles": [
       { "hours": 100, "roleId": "" }
     ],
+    "removeUnearnedRoles": true,
     "voice": {
       "ignoreAfkChannel": true,
       "ignoreDeafened": true

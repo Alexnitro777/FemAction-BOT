@@ -20,6 +20,7 @@ let cachedMtimeMs = -1;
 let messageRoles: MessageRole[] = [];
 let voiceRoles: VoiceRole[] = [];
 let voiceRules: VoiceRules = { ignoreAfkChannel: true, ignoreDeafened: true };
+let removeUnearnedRoles = true;
 
 function isNonEmptyString(value: unknown): value is string {
   return typeof value === 'string' && value.trim().length > 0;
@@ -65,12 +66,14 @@ function reload(): void {
       messageRoles?: unknown;
       voiceRoles?: unknown;
       voice?: unknown;
+      removeUnearnedRoles?: unknown;
     };
   };
   const rewards = raw.rewards ?? {};
   messageRoles = sanitizeMessageRoles(rewards.messageRoles);
   voiceRoles = sanitizeVoiceRoles(rewards.voiceRoles);
   voiceRules = sanitizeVoiceRules(rewards.voice);
+  removeUnearnedRoles = rewards.removeUnearnedRoles !== false;
 }
 
 function refreshIfChanged(): void {
@@ -106,4 +109,9 @@ export function getVoiceRoles(): VoiceRole[] {
 export function getVoiceRules(): VoiceRules {
   refreshIfChanged();
   return voiceRules;
+}
+
+export function getRemoveUnearnedRoles(): boolean {
+  refreshIfChanged();
+  return removeUnearnedRoles;
 }

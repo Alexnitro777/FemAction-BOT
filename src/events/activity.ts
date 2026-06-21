@@ -5,6 +5,7 @@ import {
   getMessageRoles,
   getVoiceRoles,
   getVoiceRules,
+  getRemoveUnearnedRoles,
 } from '../lib/rewardsConfig.js';
 
 const VOICE_TICK_MS = 60 * 1000;
@@ -46,19 +47,41 @@ async function grantRole(member: GuildMember, roleId: string): Promise<void> {
   }
 }
 
-async function grantMessageRoles(member: GuildMember, count: number): Promise<void> {
+async function revokeRole(member: GuildMember, roleId: string): Promise<void> {
+  if (!roleId || !member.roles.cache.has(roleId)) return;
+
+  try {
+    await member.roles.remove(roleId);
+    console.log(
+      `[rewards] Снята роль ${roleId} у пользователя ${member.user.tag} (${member.id}).`
+    );
+  } catch (err) {
+    console.warn(
+      `[rewards] Не удалось снять роль ${roleId} у пользователя ${member.id}: ` +
+        `${(err as Error).message}. Проверь право «Управление ролями» и иерархию ролей бота.`
+    );
+  }
+}
+
+async function syncMessageRoles(member: GuildMember, count: number): Promise<void> {
+  const remove = getRemoveUnearnedRoles();
   for (const role of getMessageRoles()) {
     if (count >= role.count) {
       await grantRole(member, role.roleId);
+    } else if (remove) {
+      await revokeRole(member, role.roleId);
     }
   }
 }
 
-async function grantVoiceRoles(member: GuildMember, voiceMs: number): Promise<void> {
+async function syncVoiceRoles(member: GuildMember, voiceMs: number): Promise<void> {
   const hours = voiceMs / HOUR_MS;
+  const remove = getRemoveUnearnedRoles();
   for (const role of getVoiceRoles()) {
     if (hours >= role.hours) {
       await grantRole(member, role.roleId);
+    } else if (remove) {
+      await revokeRole(member, role.roleId);
     }
   }
 }
@@ -89,7 +112,7 @@ async function handleVoiceStateUpdate(
 
   const total = settleSession(guildId, userId, now);
   if (total !== null && member) {
-    await grantVoiceRoles(member, total);
+    await syncVoiceRoles(member, total);
   }
 
   if (counts(newState)) {
@@ -112,7 +135,7 @@ async function tickVoice(client: BotClient): Promise<void> {
 
     const member = client.guilds.cache.get(guildId)?.members.cache.get(userId);
     if (member) {
-      await grantVoiceRoles(member, total);
+      await syncVoiceRoles(member, total);
     }
   }
 }
@@ -162,7 +185,7 @@ export function registerActivityHandlers(client: BotClient): void {
     try {
       const count = addMessage(message.guildId, message.author.id);
       if (message.member) {
-        await grantMessageRoles(message.member, count);
+        await syncMessageRoles(message.member, count);
       }
     } catch (err) {
       console.error('Ошибка учёта сообщения:', err);
