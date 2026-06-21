@@ -40,21 +40,6 @@ export function formatVoiceDuration(ms: number): string {
   return parts.join(' ');
 }
 
-export function formatVoiceThreshold(hours: number): string {
-  const totalMinutes = Math.max(1, Math.round(hours * 60));
-  const h = Math.floor(totalMinutes / 60);
-  const m = totalMinutes % 60;
-
-  const parts: string[] = [];
-  if (h > 0) {
-    parts.push(`${h} ${pluralize(h, 'час', 'часа', 'часов')}`);
-  }
-  if (m > 0 || h === 0) {
-    parts.push(`${m} ${pluralize(m, 'минута', 'минуты', 'минут')}`);
-  }
-  return parts.join(' ');
-}
-
 function pluralize(n: number, one: string, few: string, many: string): string {
   const mod10 = n % 10;
   const mod100 = n % 100;
