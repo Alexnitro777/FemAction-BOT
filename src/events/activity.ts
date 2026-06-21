@@ -1,6 +1,11 @@
 import { Events, GuildMember, Message, VoiceState } from 'discord.js';
 import type { BotClient } from '../types.js';
-import { addMessage, addVoiceMs } from '../lib/statsStore.js';
+import {
+  addMessage,
+  addVoiceMs,
+  getStats,
+  getGuildUserIds,
+} from '../lib/statsStore.js';
 import {
   getMessageRoles,
   getVoiceRoles,
@@ -11,6 +16,7 @@ import { config } from '../config.js';
 
 const VOICE_TICK_MS = 60 * 1000;
 const HOUR_MS = 60 * 60 * 1000;
+const SWEEP_INTERVAL_MS = 60 * 60 * 1000;
 
 const activeSessions = new Map<string, { startedAt: number }>();
 const missingRoleWarned = new Set<string>();
@@ -208,6 +214,52 @@ function scanExistingVoice(client: BotClient): void {
   }
 }
 
+async function sweepRoles(client: BotClient): Promise<void> {
+  if (!config.guildId) return;
+
+  const msgRoles = getMessageRoles();
+  const voiceRoles = getVoiceRoles();
+  if (msgRoles.length === 0 && voiceRoles.length === 0) return;
+
+  const guild = client.guilds.cache.get(config.guildId);
+  if (!guild) return;
+
+  const userIds = new Set<string>(getGuildUserIds(config.guildId));
+  for (const role of [...msgRoles, ...voiceRoles]) {
+    const cached = guild.roles.cache.get(role.roleId);
+    if (cached) {
+      for (const id of cached.members.keys()) userIds.add(id);
+    }
+  }
+  if (userIds.size === 0) return;
+
+  let checked = 0;
+  for (const userId of userIds) {
+    let member: GuildMember | undefined;
+    try {
+      member = guild.members.cache.get(userId) ?? (await guild.members.fetch(userId));
+    } catch {
+      continue;
+    }
+    if (member.user.bot) continue;
+
+    const stats = getStats(config.guildId, userId);
+    await syncMessageRoles(member, stats.messages);
+    await syncVoiceRoles(member, stats.voiceMs);
+    checked++;
+  }
+
+  console.log(`[rewards] Фоновая сверка ролей: проверено участников ${checked}.`);
+}
+
+async function runSweep(client: BotClient): Promise<void> {
+  try {
+    await sweepRoles(client);
+  } catch (err) {
+    console.error('Ошибка фоновой сверки ролей:', err);
+  }
+}
+
 export function registerActivityHandlers(client: BotClient): void {
   client.on(Events.MessageCreate, async (message: Message) => {
     if (message.author.bot || !message.guildId || !inScope(message.guildId)) return;
@@ -235,9 +287,14 @@ export function registerActivityHandlers(client: BotClient): void {
 
   client.once(Events.ClientReady, () => {
     scanExistingVoice(client);
+    void runSweep(client);
   });
 
   setInterval(() => {
     void tickVoice(client);
   }, VOICE_TICK_MS).unref();
+
+  setInterval(() => {
+    void runSweep(client);
+  }, SWEEP_INTERVAL_MS).unref();
 }

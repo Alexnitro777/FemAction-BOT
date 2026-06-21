@@ -166,6 +166,11 @@ export function getStats(guildId: string, userId: string): UserStats {
   return { messages: user?.messages ?? 0, voiceMs: user?.voiceMs ?? 0 };
 }
 
+export function getGuildUserIds(guildId: string): string[] {
+  const guild = guilds.get(guildId);
+  return guild ? [...guild.keys()] : [];
+}
+
 export function addMessage(guildId: string, userId: string): number {
   const user = getUser(guildId, userId);
   user.messages++;
