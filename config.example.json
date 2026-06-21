@@ -63,5 +63,8 @@
       "ignoreAfkChannel": true,
       "ignoreDeafened": true
     }
+  },
+  "commandChannels": {
+    "статистика": []
   }
 }

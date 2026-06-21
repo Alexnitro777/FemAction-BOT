@@ -3,6 +3,7 @@ import type { BotClient } from '../types.js';
 import { config } from '../config.js';
 import { buildActionResponse } from '../lib/buildResponse.js';
 import { formatCooldownTime } from '../lib/formatTime.js';
+import { getCommandChannels, isCommandAllowedHere } from '../lib/commandChannels.js';
 
 export function registerMessageHandler(client: BotClient) {
   client.on(Events.MessageCreate, async (message: Message) => {
@@ -18,6 +19,24 @@ export function registerMessageHandler(client: BotClient) {
 
       const util = client.utility.get(commandName);
       if (util?.executeText) {
+        if (
+          message.guildId &&
+          !isCommandAllowedHere(
+            util.name,
+            message.channelId,
+            'parentId' in message.channel ? message.channel.parentId : null
+          )
+        ) {
+          if (message.channel.isSendable()) {
+            const channels = getCommandChannels(util.name)
+              .map((id) => `<#${id}>`)
+              .join(', ');
+            await message.reply(
+              `Эту команду можно использовать только в: ${channels}`
+            );
+          }
+          return;
+        }
         await util.executeText(message, parts);
         return;
       }
