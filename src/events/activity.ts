@@ -262,6 +262,14 @@ async function sweepRoles(client: BotClient): Promise<void> {
   const guild = client.guilds.cache.get(config.guildId);
   if (!guild) return;
 
+  try {
+    await guild.members.fetch();
+  } catch (err) {
+    console.warn(
+      `[rewards] Не удалось загрузить участников для сверки: ${(err as Error).message}.`
+    );
+  }
+
   const userIds = new Set<string>(getGuildUserIds(config.guildId));
   for (const role of [...msgRoles, ...voiceRoles]) {
     const cached = guild.roles.cache.get(role.roleId);
