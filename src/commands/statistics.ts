@@ -32,7 +32,7 @@ function buildStatsEmbed(guildId: string, user: User): EmbedBuilder {
   if (nextMsg) {
     const percent = Math.floor((stats.messages / nextMsg.count) * 100);
     lines.push(
-      `💬 ${stats.messages} / ${nextMsg.count} (${percent}%) — ещё ${nextMsg.count - stats.messages}`
+      `💬 ${stats.messages}/${nextMsg.count} (${percent}%) — ещё ${formatMessageCount(nextMsg.count - stats.messages)}`
     );
   }
 
@@ -43,7 +43,7 @@ function buildStatsEmbed(guildId: string, user: User): EmbedBuilder {
     const targetMs = nextVoice.hours * HOUR_MS;
     const percent = Math.floor((totalVoiceMs / targetMs) * 100);
     lines.push(
-      `🎙️ ${formatVoiceShort(totalVoiceMs)} / ${formatVoiceShort(targetMs)} (${percent}%) — ещё ${formatVoiceShort(targetMs - totalVoiceMs)}`
+      `🎙️ ${formatVoiceShort(totalVoiceMs)}/${formatVoiceShort(targetMs)} (${percent}%) — ещё ${formatVoiceShort(targetMs - totalVoiceMs)}`
     );
   }
 
