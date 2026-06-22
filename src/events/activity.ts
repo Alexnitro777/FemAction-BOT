@@ -14,7 +14,7 @@ import {
 } from '../lib/rewardsConfig.js';
 import { config } from '../config.js';
 
-const VOICE_TICK_MS = 60 * 1000;
+const VOICE_TICK_MS = 15 * 1000;
 const MAX_TICK_MS = VOICE_TICK_MS * 2;
 const HOUR_MS = 60 * 60 * 1000;
 const SWEEP_INTERVAL_MS = 60 * 60 * 1000;
@@ -163,6 +163,11 @@ async function handleVoiceStateUpdate(
 
   if (counts(newState)) {
     activeSessions.set(sessionKey(guildId, userId), { startedAt: now });
+  } else if (newState.channel) {
+    console.log(
+      `[rewards] Голос не засчитывается для ${userId}: deaf=${newState.deaf}, ` +
+        `afk=${newState.channel.id === newState.guild.afkChannelId}.`
+    );
   }
 }
 
@@ -188,9 +193,16 @@ async function tickVoice(client: BotClient): Promise<void> {
 
     const total = addVoiceMs(guildId, userId, elapsed);
 
-    const member = guild?.members.cache.get(userId) ?? state.member ?? undefined;
+    let member = guild?.members.cache.get(userId) ?? state.member ?? undefined;
+    if (!member && guild) {
+      member = await guild.members.fetch(userId).catch(() => undefined);
+    }
     if (member) {
       await syncRewardRoles(member, getStats(guildId, userId).messages, total);
+    } else {
+      console.warn(
+        `[rewards] Участник ${userId} не в кэше — время начислено, роль не синхронизирована.`
+      );
     }
   }
 }
