@@ -51,13 +51,13 @@ function refreshIfChanged(): void {
 
   try {
     reload();
+    cachedMtimeMs = mtimeMs;
   } catch (err) {
     console.warn(
       `[gifs] Не удалось перечитать config.json: ${(err as Error).message}. ` +
         'Использую прошлые значения гифок.'
     );
   }
-  cachedMtimeMs = mtimeMs;
 }
 
 export function getGifs(name: string): string[] {

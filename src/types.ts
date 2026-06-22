@@ -10,7 +10,6 @@ export interface ActionDefinition {
   selfTemplate?: string;
   requireTarget?: boolean;
   noTarget?: boolean;
-  gifs?: string[];
   color?: number;
   customEmbed?: (authorMention: string, targetMention: string | null) => {
     title?: string;

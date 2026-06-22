@@ -87,13 +87,13 @@ function refreshIfChanged(): void {
 
   try {
     reload();
+    cachedMtimeMs = mtimeMs;
   } catch (err) {
     console.warn(
       `[rewards] Не удалось перечитать config.json: ${(err as Error).message}. ` +
         'Использую прошлые значения наград.'
     );
   }
-  cachedMtimeMs = mtimeMs;
 }
 
 export function getMessageRoles(): MessageRole[] {

@@ -15,6 +15,7 @@ import {
 import { config } from '../config.js';
 
 const VOICE_TICK_MS = 60 * 1000;
+const MAX_TICK_MS = VOICE_TICK_MS * 2;
 const HOUR_MS = 60 * 60 * 1000;
 const SWEEP_INTERVAL_MS = 60 * 60 * 1000;
 
@@ -139,7 +140,7 @@ function settleSession(
   if (!session) return null;
 
   activeSessions.delete(key);
-  const elapsed = now - session.startedAt;
+  const elapsed = Math.min(now - session.startedAt, MAX_TICK_MS);
   if (elapsed <= 0) return null;
   return addVoiceMs(guildId, userId, elapsed);
 }
@@ -167,18 +168,27 @@ async function handleVoiceStateUpdate(
 
 async function tickVoice(client: BotClient): Promise<void> {
   const now = Date.now();
-  for (const [key, session] of activeSessions) {
-    const elapsed = now - session.startedAt;
-    if (elapsed <= 0) continue;
+  reconcileSessions(client, now);
 
+  for (const [key, session] of activeSessions) {
     const sep = key.indexOf(':');
     const guildId = key.slice(0, sep);
     const userId = key.slice(sep + 1);
 
-    const total = addVoiceMs(guildId, userId, elapsed);
-    session.startedAt = now;
+    const guild = client.guilds.cache.get(guildId);
+    const state = guild?.voiceStates.cache.get(userId);
+    if (!state || !counts(state)) {
+      activeSessions.delete(key);
+      continue;
+    }
 
-    const member = client.guilds.cache.get(guildId)?.members.cache.get(userId);
+    const elapsed = Math.min(now - session.startedAt, MAX_TICK_MS);
+    session.startedAt = now;
+    if (elapsed <= 0) continue;
+
+    const total = addVoiceMs(guildId, userId, elapsed);
+
+    const member = guild?.members.cache.get(userId) ?? state.member ?? undefined;
     if (member) {
       await syncRewardRoles(member, getStats(guildId, userId).messages, total);
     }
@@ -195,7 +205,7 @@ export function getActiveVoiceMs(guildId: string, userId: string): number {
 export function flushVoiceSessions(): void {
   const now = Date.now();
   for (const [key, session] of activeSessions) {
-    const elapsed = now - session.startedAt;
+    const elapsed = Math.min(now - session.startedAt, MAX_TICK_MS);
     if (elapsed <= 0) continue;
 
     const sep = key.indexOf(':');
@@ -207,18 +217,24 @@ export function flushVoiceSessions(): void {
   }
 }
 
-function scanExistingVoice(client: BotClient): void {
-  const now = Date.now();
+function reconcileSessions(client: BotClient, now: number): number {
   let started = 0;
   for (const guild of client.guilds.cache.values()) {
     if (!inScope(guild.id)) continue;
     for (const state of guild.voiceStates.cache.values()) {
-      if (counts(state)) {
-        activeSessions.set(sessionKey(guild.id, state.id), { startedAt: now });
+      if (!counts(state)) continue;
+      const key = sessionKey(guild.id, state.id);
+      if (!activeSessions.has(key)) {
+        activeSessions.set(key, { startedAt: now });
         started++;
       }
     }
   }
+  return started;
+}
+
+function scanExistingVoice(client: BotClient): void {
+  const started = reconcileSessions(client, Date.now());
   if (started > 0) {
     console.log(`[rewards] Возобновлено голосовых сессий при старте: ${started}.`);
   }

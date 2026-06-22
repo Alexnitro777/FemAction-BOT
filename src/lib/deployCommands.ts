@@ -73,4 +73,7 @@ async function deploy() {
   }
 }
 
-deploy();
+deploy().catch((err) => {
+  console.error('Ошибка деплоя:', err);
+  process.exit(1);
+});

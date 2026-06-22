@@ -27,7 +27,8 @@ function progressBar(current: number, floor: number, target: number): string {
   let filled = Math.round(clamped * BAR_SEGMENTS);
   if (clamped < 1) filled = Math.min(filled, BAR_SEGMENTS - 1);
   const bar = '🟩'.repeat(filled) + '⬜'.repeat(BAR_SEGMENTS - filled);
-  return `${bar}  ${Math.round(clamped * 100)}%`;
+  const percent = clamped < 1 ? Math.floor(clamped * 100) : 100;
+  return `${bar}  ${percent}%`;
 }
 
 function buildStatsEmbed(guildId: string, user: User): EmbedBuilder {
@@ -60,20 +61,20 @@ function buildStatsEmbed(guildId: string, user: User): EmbedBuilder {
   }
 
   const voiceRoles = getVoiceRoles();
-  const currentHours = totalVoiceMs / HOUR_MS;
-  const nextVoice = voiceRoles.find((r) => r.hours > currentHours);
+  const grantedHours = stats.voiceMs / HOUR_MS;
+  const nextVoice = voiceRoles.find((r) => r.hours > grantedHours);
   if (nextVoice) {
     const floorMs =
       previousThreshold(
         voiceRoles.map((r) => r.hours),
-        currentHours
+        grantedHours
       ) * HOUR_MS;
     const targetMs = nextVoice.hours * HOUR_MS;
     embed.addFields({
       name: '⬆️ Следующая роль за голос',
       value:
-        `${progressBar(totalVoiceMs, floorMs, targetMs)}\n` +
-        `ещё ${formatVoiceDuration(targetMs - totalVoiceMs)}`,
+        `${progressBar(stats.voiceMs, floorMs, targetMs)}\n` +
+        `ещё ${formatVoiceDuration(targetMs - stats.voiceMs)}`,
     });
   }
 
