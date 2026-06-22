@@ -1,4 +1,10 @@
-import { Events, GuildMember, Message, VoiceState } from 'discord.js';
+import {
+  Events,
+  GuildMember,
+  Message,
+  PartialGuildMember,
+  VoiceState,
+} from 'discord.js';
 import type { BotClient } from '../types.js';
 import {
   addMessage,
@@ -171,6 +177,38 @@ async function handleVoiceStateUpdate(
   }
 }
 
+async function handleGuildMemberUpdate(
+  oldMember: GuildMember | PartialGuildMember,
+  newMember: GuildMember
+): Promise<void> {
+  if (!inScope(newMember.guild.id)) return;
+  if (newMember.user.bot) return;
+  if (!getRemoveUnearnedRoles()) return;
+
+  const managed = new Set<string>();
+  for (const role of getMessageRoles()) {
+    if (role.roleId) managed.add(role.roleId);
+  }
+  for (const role of getVoiceRoles()) {
+    if (role.roleId) managed.add(role.roleId);
+  }
+  if (managed.size === 0) return;
+
+  let addedManaged = oldMember.partial;
+  if (!addedManaged) {
+    for (const roleId of newMember.roles.cache.keys()) {
+      if (managed.has(roleId) && !oldMember.roles.cache.has(roleId)) {
+        addedManaged = true;
+        break;
+      }
+    }
+  }
+  if (!addedManaged) return;
+
+  const stats = getStats(newMember.guild.id, newMember.id);
+  await syncRewardRoles(newMember, stats.messages, stats.voiceMs);
+}
+
 async function tickVoice(client: BotClient): Promise<void> {
   const now = Date.now();
   reconcileSessions(client, now);
@@ -327,6 +365,17 @@ export function registerActivityHandlers(client: BotClient): void {
         await handleVoiceStateUpdate(oldState, newState);
       } catch (err) {
         console.error('Ошибка учёта голосовой активности:', err);
+      }
+    }
+  );
+
+  client.on(
+    Events.GuildMemberUpdate,
+    async (oldMember, newMember) => {
+      try {
+        await handleGuildMemberUpdate(oldMember, newMember);
+      } catch (err) {
+        console.error('Ошибка синхронизации ролей при изменении участника:', err);
       }
     }
   );
