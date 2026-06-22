@@ -15,6 +15,7 @@ import {
 } from './events/activity.js';
 import helpCommand from './commands/help.js';
 import statisticsCommand from './commands/statistics.js';
+import backfillCommand from './commands/backfill.js';
 import { CooldownManager } from './lib/cooldowns.js';
 import { loadStats, startAutoFlush, flushStats } from './lib/statsStore.js';
 
@@ -40,7 +41,7 @@ async function main() {
   setInterval(() => client.cooldowns.cleanup(), 5 * 60 * 1000).unref();
 
   client.utility = new Collection<string, UtilityCommand>();
-  for (const util of [helpCommand, statisticsCommand]) {
+  for (const util of [helpCommand, statisticsCommand, backfillCommand]) {
     client.utility.set(util.name, util);
   }
 

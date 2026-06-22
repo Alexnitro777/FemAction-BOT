@@ -136,6 +136,13 @@ async function syncRewardRoles(
   }
 }
 
+export async function syncRewardRolesForMember(
+  member: GuildMember
+): Promise<void> {
+  const stats = getStats(member.guild.id, member.id);
+  await syncRewardRoles(member, stats.messages, stats.voiceMs);
+}
+
 function settleSession(
   guildId: string,
   userId: string,

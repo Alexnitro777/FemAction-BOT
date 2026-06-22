@@ -178,6 +178,12 @@ export function addMessage(guildId: string, userId: string): number {
   return user.messages;
 }
 
+export function setMessages(guildId: string, userId: string, count: number): void {
+  const user = getUser(guildId, userId);
+  user.messages = count;
+  dirty.add(dirtyKey(guildId, userId));
+}
+
 export function addVoiceMs(guildId: string, userId: string, ms: number): number {
   const user = getUser(guildId, userId);
   user.voiceMs += ms;

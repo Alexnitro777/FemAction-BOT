@@ -1,4 +1,5 @@
 import {
+  PermissionFlagsBits,
   REST,
   Routes,
   SlashCommandBuilder,
@@ -8,6 +9,7 @@ import { config } from '../config.js';
 import { loadActions } from './loadActions.js';
 import helpCommand from '../commands/help.js';
 import statisticsCommand from '../commands/statistics.js';
+import backfillCommand from '../commands/backfill.js';
 
 async function deploy() {
   const { actions } = await loadActions();
@@ -47,6 +49,14 @@ async function deploy() {
           .setDescription('Чью статистику показать (по умолчанию — твою)')
           .setRequired(false)
       )
+      .toJSON()
+  );
+
+  body.push(
+    new SlashCommandBuilder()
+      .setName(backfillCommand.name)
+      .setDescription(backfillCommand.description)
+      .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
       .toJSON()
   );
 
