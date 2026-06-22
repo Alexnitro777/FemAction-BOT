@@ -40,6 +40,21 @@ export function formatVoiceDuration(ms: number): string {
   return parts.join(' ');
 }
 
+export function formatVoiceShort(ms: number): string {
+  const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+  if (totalSeconds < 60) {
+    return `${totalSeconds} с`;
+  }
+
+  const totalMinutes = Math.floor(totalSeconds / 60);
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (hours === 0) return `${minutes} мин`;
+  if (minutes === 0) return `${hours} ч`;
+  return `${hours} ч ${minutes} мин`;
+}
+
 function pluralize(n: number, one: string, few: string, many: string): string {
   const mod10 = n % 10;
   const mod100 = n % 100;
