@@ -42,17 +42,17 @@ export function formatVoiceDuration(ms: number): string {
 
 export function formatVoiceShort(ms: number): string {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-  if (totalSeconds < 60) {
-    return `${totalSeconds} с`;
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+
+  if (hours > 0) {
+    return minutes > 0 ? `${hours} ч ${minutes} мин` : `${hours} ч`;
   }
-
-  const totalMinutes = Math.floor(totalSeconds / 60);
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-
-  if (hours === 0) return `${minutes} мин`;
-  if (minutes === 0) return `${hours} ч`;
-  return `${hours} ч ${minutes} мин`;
+  if (minutes > 0) {
+    return seconds > 0 ? `${minutes} мин ${seconds} с` : `${minutes} мин`;
+  }
+  return `${seconds} с`;
 }
 
 function pluralize(n: number, one: string, few: string, many: string): string {
