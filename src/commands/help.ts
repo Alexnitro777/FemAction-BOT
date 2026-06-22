@@ -1,12 +1,18 @@
 import { EmbedBuilder, MessageFlags } from 'discord.js';
 import type { BotClient, UtilityCommand } from '../types.js';
 
+const HIDDEN_UTILITY = new Set(['скан']);
+
+function formatLine(name: string, description: string): string {
+  return `> \`/${name}\` — ${description}`;
+}
+
 function buildHelpEmbed(client: BotClient): EmbedBuilder {
   const rpCommands: string[] = [];
   const otherCommands: string[] = [];
 
   client.rpActions.forEach((a) => {
-    const line = `**${a.description}**\n\`/${a.name}\``;
+    const line = formatLine(a.name, a.description);
 
     if (a.noTarget) {
       otherCommands.push(line);
@@ -17,29 +23,35 @@ function buildHelpEmbed(client: BotClient): EmbedBuilder {
 
   const utilCommands: string[] = [];
   client.utility.forEach((u) => {
-    if (!u.executeSlash) return;
-    utilCommands.push(`**${u.description}**\n\`/${u.name}\``);
+    if (!u.executeSlash || HIDDEN_UTILITY.has(u.name)) return;
+    utilCommands.push(formatLine(u.name, u.description));
   });
 
-  const rpSection = rpCommands.length > 0
-    ? `**🎭 РП-команды:**\n${rpCommands.join('\n\n')}`
-    : '';
-
-  const otherSection = otherCommands.length > 0
-    ? `**🎲 Другие команды:**\n${otherCommands.join('\n\n')}`
-    : '';
-
-  const utilSection = utilCommands.length > 0
-    ? `**🛠️ Утилиты:**\n${utilCommands.join('\n\n')}`
-    : '';
-
-  const description = [rpSection, otherSection, utilSection].filter(s => s).join('\n\n');
-
-  return new EmbedBuilder()
-    .setTitle('Список команд')
+  const embed = new EmbedBuilder()
+    .setTitle('✨ Список команд')
     .setColor(0xff7fa5)
-    .setDescription(description || 'Команды не загружены.')
-    .setFooter({ text: 'Для РП-команд укажи @пользователя как цель действия.' });
+    .setFooter({ text: '💡 Для РП-команд укажи @пользователя как цель действия.' });
+
+  const fields: { name: string; value: string }[] = [];
+
+  if (rpCommands.length > 0) {
+    fields.push({ name: '🎭 РП-команды', value: rpCommands.join('\n') });
+  }
+  if (otherCommands.length > 0) {
+    fields.push({ name: '🎲 Другие команды', value: otherCommands.join('\n') });
+  }
+  if (utilCommands.length > 0) {
+    fields.push({ name: '🛠️ Утилиты', value: utilCommands.join('\n') });
+  }
+
+  if (fields.length > 0) {
+    embed.setDescription('Выбери команду и подари тёплый момент 💗');
+    embed.addFields(fields);
+  } else {
+    embed.setDescription('Команды не загружены.');
+  }
+
+  return embed;
 }
 
 const command: UtilityCommand = {
