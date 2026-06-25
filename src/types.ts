@@ -1,7 +1,10 @@
 import {
+  AutocompleteInteraction,
+  ButtonInteraction,
   ChatInputCommandInteraction,
   Collection,
 } from 'discord.js';
+import type { EmbedDefinition } from './embeds/types.js';
 
 export interface ActionDefinition {
   name: string;
@@ -26,12 +29,20 @@ export interface UtilityCommand {
   executeSlash?: (
     interaction: ChatInputCommandInteraction
   ) => Promise<void> | void;
+  autocomplete?: (
+    interaction: AutocompleteInteraction
+  ) => Promise<void> | void;
 }
 
 declare module 'discord.js' {
   interface Client {
     rpActions: Collection<string, ActionDefinition>;
     utility: Collection<string, UtilityCommand>;
+    embeds: Collection<string, EmbedDefinition>;
+    buttonHandlers: Collection<
+      string,
+      (interaction: ButtonInteraction) => Promise<void> | void
+    >;
     cooldowns: import('./lib/cooldowns.js').CooldownManager;
   }
 }

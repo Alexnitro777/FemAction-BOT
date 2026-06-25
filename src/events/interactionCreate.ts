@@ -10,6 +10,36 @@ import { formatCooldownTime } from '../lib/formatTime.js';
 
 export function registerInteractionHandler(client: BotClient) {
   client.on(Events.InteractionCreate, async (interaction: Interaction) => {
+    if (interaction.isButton()) {
+      const handler = client.buttonHandlers.get(interaction.customId);
+      if (!handler) return;
+      try {
+        await handler(interaction);
+      } catch (err) {
+        console.error('Ошибка в обработчике кнопки:', err);
+        if (!interaction.replied && !interaction.deferred) {
+          try {
+            await interaction.reply({
+              content: 'Произошла ошибка при обработке кнопки.',
+              flags: MessageFlags.Ephemeral,
+            });
+          } catch {}
+        }
+      }
+      return;
+    }
+
+    if (interaction.isAutocomplete()) {
+      const util = client.utility.get(interaction.commandName);
+      if (!util?.autocomplete) return;
+      try {
+        await util.autocomplete(interaction);
+      } catch (err) {
+        console.error('Ошибка автоподсказки:', err);
+      }
+      return;
+    }
+
     if (!interaction.isChatInputCommand()) return;
 
     try {

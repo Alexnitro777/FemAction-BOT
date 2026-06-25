@@ -1,4 +1,5 @@
 import {
+  ChannelType,
   PermissionFlagsBits,
   REST,
   Routes,
@@ -10,6 +11,7 @@ import { loadActions } from './loadActions.js';
 import helpCommand from '../commands/help.js';
 import statisticsCommand from '../commands/statistics.js';
 import backfillCommand from '../commands/backfill.js';
+import postCommand from '../commands/post.js';
 
 async function deploy() {
   const { actions } = await loadActions();
@@ -57,6 +59,28 @@ async function deploy() {
       .setName(backfillCommand.name)
       .setDescription(backfillCommand.description)
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+      .toJSON()
+  );
+
+  body.push(
+    new SlashCommandBuilder()
+      .setName(postCommand.name)
+      .setDescription(postCommand.description)
+      .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
+      .addStringOption((opt) =>
+        opt
+          .setName('название')
+          .setDescription('Какой embed отправить')
+          .setRequired(true)
+          .setAutocomplete(true)
+      )
+      .addChannelOption((opt) =>
+        opt
+          .setName('канал')
+          .setDescription('Канал назначения (по умолчанию — текущий)')
+          .addChannelTypes(ChannelType.GuildText, ChannelType.GuildAnnouncement)
+          .setRequired(false)
+      )
       .toJSON()
   );
 

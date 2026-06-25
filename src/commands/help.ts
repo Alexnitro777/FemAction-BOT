@@ -1,7 +1,7 @@
 import { EmbedBuilder, MessageFlags } from 'discord.js';
 import type { BotClient, UtilityCommand } from '../types.js';
 
-const HIDDEN_UTILITY = new Set(['скан']);
+const HIDDEN_UTILITY = new Set(['скан', 'запостить']);
 
 function formatLine(name: string, description: string): string {
   return `> \`/${name}\` — ${description}`;
