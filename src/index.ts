@@ -19,6 +19,7 @@ import helpCommand from './commands/help.js';
 import statisticsCommand from './commands/statistics.js';
 import backfillCommand from './commands/backfill.js';
 import postCommand from './commands/post.js';
+import leaderboardCommand from './commands/leaderboard.js';
 import { CooldownManager } from './lib/cooldowns.js';
 import { loadStats, startAutoFlush, flushStats } from './lib/statsStore.js';
 
@@ -62,7 +63,13 @@ async function main() {
   setInterval(() => client.cooldowns.cleanup(), 5 * 60 * 1000).unref();
 
   client.utility = new Collection<string, UtilityCommand>();
-  for (const util of [helpCommand, statisticsCommand, backfillCommand, postCommand]) {
+  for (const util of [
+    helpCommand,
+    statisticsCommand,
+    backfillCommand,
+    postCommand,
+    leaderboardCommand,
+  ]) {
     client.utility.set(util.name, util);
   }
 

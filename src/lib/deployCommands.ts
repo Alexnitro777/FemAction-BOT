@@ -12,6 +12,7 @@ import helpCommand from '../commands/help.js';
 import statisticsCommand from '../commands/statistics.js';
 import backfillCommand from '../commands/backfill.js';
 import postCommand from '../commands/post.js';
+import leaderboardCommand from '../commands/leaderboard.js';
 
 async function deploy() {
   const { actions } = await loadActions();
@@ -51,6 +52,13 @@ async function deploy() {
           .setDescription('Чью статистику показать (по умолчанию — твою)')
           .setRequired(false)
       )
+      .toJSON()
+  );
+
+  body.push(
+    new SlashCommandBuilder()
+      .setName(leaderboardCommand.name)
+      .setDescription(leaderboardCommand.description)
       .toJSON()
   );
 
