@@ -43,7 +43,7 @@ const action: ActionDefinition = {
       gif = pick('absolute');
     } else {
       const tier = TIERS.find((t) => value <= t.max)!;
-      message = `**Глупенький на ${value}!** ${tier.phrase}`;
+      message = `**Глупенький на ${value}%!** ${tier.phrase}`;
       color = tier.color;
       gif = pick(tier.pool);
     }
