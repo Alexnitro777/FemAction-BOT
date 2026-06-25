@@ -4,7 +4,6 @@ import {
   ButtonStyle,
   ComponentType,
   EmbedBuilder,
-  Guild,
   MessageFlags,
 } from 'discord.js';
 import type { UtilityCommand } from '../types.js';
@@ -48,37 +47,19 @@ function topVoice(guildId: string): Entry[] {
 }
 
 function rankPrefix(index: number): string {
-  return MEDALS[index] ?? `\`${index + 1}.\``;
+  return MEDALS[index] ?? `${index + 1}.`;
 }
 
-async function resolveName(guild: Guild, userId: string): Promise<string> {
-  const cached = guild.members.cache.get(userId);
-  if (cached) return cached.displayName;
-  try {
-    return (await guild.members.fetch(userId)).displayName;
-  } catch {
-    void 0;
-  }
-  try {
-    return (await guild.client.users.fetch(userId)).username;
-  } catch {
-    return 'Покинул(а) сервер';
-  }
-}
-
-async function buildEmbed(guild: Guild, page: Page): Promise<EmbedBuilder> {
+function buildEmbed(guildId: string, page: Page): EmbedBuilder {
   const isMessages = page === PAGE_MESSAGES;
-  const entries = isMessages ? topMessages(guild.id) : topVoice(guild.id);
+  const entries = isMessages ? topMessages(guildId) : topVoice(guildId);
 
-  const lines = await Promise.all(
-    entries.map(async (e, i) => {
-      const formatted = isMessages
-        ? formatMessageCount(e.value)
-        : formatVoiceShort(e.value);
-      const name = await resolveName(guild, e.userId);
-      return `${rankPrefix(i)} ${name} — ${formatted}`;
-    })
-  );
+  const lines = entries.map((e, i) => {
+    const formatted = isMessages
+      ? formatMessageCount(e.value)
+      : formatVoiceShort(e.value);
+    return `${rankPrefix(i)} <@${e.userId}> — ${formatted}`;
+  });
 
   return new EmbedBuilder()
     .setColor(0xff7fa5)
@@ -110,7 +91,7 @@ const command: UtilityCommand = {
   name: 'лидеры',
   description: 'Топ-10 участников по сообщениям и времени в голосовых.',
   executeSlash: async (interaction) => {
-    if (!interaction.guild) {
+    if (!interaction.guildId) {
       await interaction.reply({
         content: 'Команда доступна только на сервере.',
         flags: MessageFlags.Ephemeral,
@@ -118,13 +99,13 @@ const command: UtilityCommand = {
       return;
     }
 
-    const guild = interaction.guild;
+    const guildId = interaction.guildId;
     let page: Page = PAGE_MESSAGES;
 
     await interaction.reply({
-      embeds: [await buildEmbed(guild, page)],
+      embeds: [buildEmbed(guildId, page)],
       components: [buildRow(page)],
-      allowedMentions: { parse: [] },
+      allowedMentions: { parse: ['users'] },
     });
 
     const message = await interaction.fetchReply();
@@ -146,9 +127,9 @@ const command: UtilityCommand = {
       page = button.customId === BTN_VOICE ? PAGE_VOICE : PAGE_MESSAGES;
 
       await button.update({
-        embeds: [await buildEmbed(guild, page)],
+        embeds: [buildEmbed(guildId, page)],
         components: [buildRow(page)],
-        allowedMentions: { parse: [] },
+        allowedMentions: { parse: ['users'] },
       });
     });
 
