@@ -27,16 +27,18 @@ interface Entry {
   value: number;
 }
 
-function topMessages(guildId: string): Entry[] {
+function topMessages(guildId: string, memberIds: Set<string>): Entry[] {
   return getGuildUserIds(guildId)
+    .filter((userId) => memberIds.has(userId))
     .map((userId) => ({ userId, value: getStats(guildId, userId).messages }))
     .filter((e) => e.value > 0)
     .sort((a, b) => b.value - a.value)
     .slice(0, TOP_LIMIT);
 }
 
-function topVoice(guildId: string): Entry[] {
+function topVoice(guildId: string, memberIds: Set<string>): Entry[] {
   return getGuildUserIds(guildId)
+    .filter((userId) => memberIds.has(userId))
     .map((userId) => ({
       userId,
       value: getStats(guildId, userId).voiceMs + getActiveVoiceMs(guildId, userId),
@@ -50,9 +52,15 @@ function rankPrefix(index: number): string {
   return MEDALS[index] ?? `${index + 1}.`;
 }
 
-function buildEmbed(guildId: string, page: Page): EmbedBuilder {
+function buildEmbed(
+  guildId: string,
+  memberIds: Set<string>,
+  page: Page
+): EmbedBuilder {
   const isMessages = page === PAGE_MESSAGES;
-  const entries = isMessages ? topMessages(guildId) : topVoice(guildId);
+  const entries = isMessages
+    ? topMessages(guildId, memberIds)
+    : topVoice(guildId, memberIds);
 
   const lines = entries.map((e, i) => {
     const formatted = isMessages
@@ -91,7 +99,7 @@ const command: UtilityCommand = {
   name: 'лидеры',
   description: 'Топ-10 участников по сообщениям и времени в голосовых.',
   executeSlash: async (interaction) => {
-    if (!interaction.guildId) {
+    if (!interaction.guild) {
       await interaction.reply({
         content: 'Команда доступна только на сервере.',
         flags: MessageFlags.Ephemeral,
@@ -99,11 +107,20 @@ const command: UtilityCommand = {
       return;
     }
 
-    const guildId = interaction.guildId;
+    const guild = interaction.guild;
+    const guildId = guild.id;
     let page: Page = PAGE_MESSAGES;
 
+    let memberIds: Set<string>;
+    try {
+      const members = await guild.members.fetch();
+      memberIds = new Set(members.keys());
+    } catch {
+      memberIds = new Set(guild.members.cache.keys());
+    }
+
     await interaction.reply({
-      embeds: [buildEmbed(guildId, page)],
+      embeds: [buildEmbed(guildId, memberIds, page)],
       components: [buildRow(page)],
       allowedMentions: { parse: ['users'] },
     });
@@ -127,7 +144,7 @@ const command: UtilityCommand = {
       page = button.customId === BTN_VOICE ? PAGE_VOICE : PAGE_MESSAGES;
 
       await button.update({
-        embeds: [buildEmbed(guildId, page)],
+        embeds: [buildEmbed(guildId, memberIds, page)],
         components: [buildRow(page)],
         allowedMentions: { parse: ['users'] },
       });
