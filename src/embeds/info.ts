@@ -31,7 +31,7 @@ const info: EmbedDefinition = {
   description: 'Информация Femboy Party',
   build: () => {
     const embed = new EmbedBuilder()
-      .setDescription('Пушистый путеводитель')
+      .setDescription('Ваш пушистый путеводитель.')
       .setImage(IMAGE_URL);
 
     const rows = [
