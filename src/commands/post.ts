@@ -47,13 +47,20 @@ const command: UtilityCommand = {
 
     try {
       const { embeds, components } = def.build();
-      await target.send({ embeds, components: components ?? [] });
+      if (embeds.length > 0) {
+        // Send first embed along with components
+        await target.send({ embeds: [embeds[0]], components: components ?? [] });
+        // Send remaining embeds one by one
+        for (let i = 1; i < embeds.length; i++) {
+          await target.send({ embeds: [embeds[i]] });
+        }
+      }
       await interaction.reply({
         content: `✅ Embed «${name}» отправлен в <#${target.id}>.`,
         flags: MessageFlags.Ephemeral,
       });
     } catch (err) {
-      console.error('Ошибка при отправке embed-а:', err);
+      console.error('Ошибка при отправке embed-а:', JSON.stringify(err, null, 2));
       await interaction.reply({
         content: `❌ Ошибка при отправке: ${err instanceof Error ? err.message : String(err)}`,
         flags: MessageFlags.Ephemeral,
