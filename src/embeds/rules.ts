@@ -1,7 +1,8 @@
 import { EmbedBuilder } from 'discord.js';
 import type { EmbedDefinition } from './types.js';
 
-const FOOTER_ICON = "https://i.ibb.co/PzPWZ1Sd/53ae1f044020d76a0a9ec56eee66c293.png";
+const FOOTER_ICON =
+  'https://i.ibb.co/PzPWZ1Sd/53ae1f044020d76a0a9ec56eee66c293.png';
 
 const rules: EmbedDefinition = {
   name: 'rules',
