@@ -20,8 +20,7 @@ const rules: EmbedDefinition = {
         '- **Будьте милашками**, прочитайте правила, если у вас есть какие-либо вопросы, наша модерация/администрация будет рада вам помочь :>\n' +
         '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n' +
         'Для верификации, пройдите в <#1444788047009812650>'
-      )
-      .setImage('https://i.ibb.co/PzPWZ1Sd/53ae1f044020d76a0a9ec56eee66c293.png');
+      );
 
     const r2 = new EmbedBuilder()
       .setTitle('Основные правила сервера')
@@ -55,8 +54,7 @@ const rules: EmbedDefinition = {
         '`1.12` При систематическом нарушении правил наказание может быть увеличено вплоть до бана.'
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
-      .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/PzPWZ1Sd/53ae1f044020d76a0a9ec56eee66c293.png');
+      .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON });
 
     const r3 = new EmbedBuilder()
       .setTitle('Правила текстовых каналов')
@@ -72,8 +70,7 @@ const rules: EmbedDefinition = {
         '```Предупреждение -> Тайм-аут 6 часов -> Тайм-аут 3 дня -> Бан.```'
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
-      .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/PzPWZ1Sd/53ae1f044020d76a0a9ec56eee66c293.png');
+      .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON });
 
     const r4 = new EmbedBuilder()
       .setTitle('Правила голосовых каналов')
@@ -83,8 +80,7 @@ const rules: EmbedDefinition = {
         '```Предупреждение -> Тайм-аут 1 день.```'
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
-      .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/PzPWZ1Sd/53ae1f044020d76a0a9ec56eee66c293.png');
+      .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON });
 
     const r5 = new EmbedBuilder()
       .setColor(0xf1e1cb)
@@ -93,8 +89,7 @@ const rules: EmbedDefinition = {
         'Действия, которые нарушают работу нашего сообщества, могут привести к мьюту или бану - в зависимости от серьезности и кратности нарушений. Действия модерации не должны публично обсуждаться. Модерация не обязана обсуждать свои действия. Если вы не уверены в действиях, которые были приняты против вас, отправьте свою заявку в <#1515013724300247292>'
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
-      .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/PzPWZ1Sd/53ae1f044020d76a0a9ec56eee66c293.png');
+      .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON });
 
     const r6 = new EmbedBuilder()
       .setColor(0xffffff)
