@@ -47,7 +47,12 @@ const command: UtilityCommand = {
 
     try {
       const { embeds, components } = def.build();
-      await target.send({ embeds, components: components ?? [] });
+      if (embeds.length > 0) {
+        await target.send({ embeds: [embeds[0]], components: components ?? [] });
+        for (let i = 1; i < embeds.length; i++) {
+          await target.send({ embeds: [embeds[i]] });
+        }
+      }
       await interaction.reply({
         content: `✅ Embed «${name}» отправлен в <#${target.id}>.`,
         flags: MessageFlags.Ephemeral,
