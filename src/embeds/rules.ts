@@ -1,14 +1,7 @@
 import { EmbedBuilder } from 'discord.js';
 import type { EmbedDefinition } from './types.js';
 
-const COLOR_MAIN = 7493016;
-const COLOR_RULES = 12581199;
-const COLOR_TEXT = 10343666;
-const COLOR_VOICE = 13808617;
-const COLOR_EXTRA = 15851979;
-const COLOR_FOOTER = 16777215;
-
-const FOOTER_ICON = "https://message.style/cdn/images/b0252f5e9649892b5177afe2b27076fa8f2f951420c8df9648f5ae1b7cb4cf30.png";
+const FOOTER_ICON = "https://i.ibb.co/PzPWZ1Sd/53ae1f044020d76a0a9ec56eee66c293.png";
 
 const rules: EmbedDefinition = {
   name: 'rules',
@@ -17,7 +10,7 @@ const rules: EmbedDefinition = {
   build() {
     const r1 = new EmbedBuilder()
       .setTitle('Добро пожаловать! :3')
-      .setColor(COLOR_MAIN)
+      .setColor(7493016)
       .setDescription(
         'Этот сервер создан ***исключительно*** для дружелюбного комьюнити, и мы уверены, что мы Вас не огорчим ;3\n' +
         '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n' +
@@ -28,11 +21,11 @@ const rules: EmbedDefinition = {
         '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n' +
         'Для верификации, пройдите в <#1444788047009812650>'
       )
-      .setImage('https://i.ibb.co/HLkgsKc8/G7r-QMt0-WAAAGAEV.webp');
+      .setImage('');
 
     const r2 = new EmbedBuilder()
       .setTitle('Основные правила сервера')
-      .setColor(COLOR_RULES)
+      .setColor(12581199)
       .setDescription(
         '`1.0` Решения администрации по вопросам модерации являются окончательными. Администрация вправе пересмотреть наказание при наличии новых обстоятельств.\n\n' +
         '`1.1` Незнание правил не освобождает от ответственности.\n\n' +
@@ -63,11 +56,11 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/7NGfPtkP/femboypartybanner.webp');
+      .setImage('');
 
     const r3 = new EmbedBuilder()
       .setTitle('Правила текстовых каналов')
-      .setColor(COLOR_TEXT)
+      .setColor(10343666)
       .setDescription(
         '`2.0` Запрещены спам, флуд и оффтоп.\n' +
         '```Предупреждение -> Тайм-аут 30 минут.```\n' +
@@ -80,31 +73,31 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/W4JRnB73/femboypartyrule1banner.webp');
+      .setImage('');
 
     const r4 = new EmbedBuilder()
       .setTitle('Правила голосовых каналов')
-      .setColor(COLOR_VOICE)
+      .setColor(13808617)
       .setDescription(
         '`3.0` Запрещено издавать громкие звуки, использовать программы изменяющие голос и использование саундпада. Правило действует в том случае если вышеназванное мешает участникам войса.\n' +
         '```Предупреждение -> Тайм-аут 1 день.```'
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/s9wySTK6/femboypartyrule2banner.webp');
+      .setImage('');
 
     const r5 = new EmbedBuilder()
-      .setColor(COLOR_EXTRA)
+      .setColor(15851979)
       .setDescription(
         'Данный список правил не является исчерпывающим, администрация оставляет за собой право финального решения относительно контента пользователей. Решения основываются на общих принципах морали и этики, позволяя поддерживать здоровую атмосферу в чатах. Правила могут редактироваться или дополняться в дальнейшем, если это будет необходимо.\n\n' +
         'Действия, которые нарушают работу нашего сообщества, могут привести к мьюту или бану - в зависимости от серьезности и кратности нарушений. Действия модерации не должны публично обсуждаться. Модерация не обязана обсуждать свои действия. Если вы не уверены в действиях, которые были приняты против вас, отправьте свою заявку в <#1515013724300247292>'
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/1GP6Hp8G/femboypartyrule3banner.webp');
+      .setImage('');
 
     const r6 = new EmbedBuilder()
-      .setColor(COLOR_FOOTER)
+      .setColor(16777215)
       .setDescription('# **Для корректного отображения сервера не забудьте нажать "Показать все каналы"**')
       .setFooter({ text: 'Сделано с любовью для Femboy Party', iconURL: FOOTER_ICON });
 
