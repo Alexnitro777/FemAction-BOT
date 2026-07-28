@@ -26,7 +26,7 @@ const rules: EmbedDefinition = {
 
     const r2 = new EmbedBuilder()
       .setTitle('Основные правила сервера')
-      .setColor(0xbff94f)
+      .setColor(0x007fff)
       .setDescription(
         '`1.0` Решения администрации по вопросам модерации являются окончательными. Администрация вправе пересмотреть наказание при наличии новых обстоятельств.\n\n' +
         '`1.1` Незнание правил не освобождает от ответственности.\n\n' +
@@ -59,7 +59,7 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('http://77.110.101.28/cdn/femboyparty/m_TyUeleWHUy.webp');
+      .setImage('http://77.110.101.28/cdn/femboyparty/md0p4N5baftL.jpg');
 
     const r3 = new EmbedBuilder()
       .setTitle('Правила текстовых каналов')
