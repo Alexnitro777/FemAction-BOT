@@ -2,7 +2,7 @@ import { EmbedBuilder } from 'discord.js';
 import type { EmbedDefinition } from './types.js';
 
 const FOOTER_ICON =
-  'https://i.ibb.co/fzt0RhnH/53ae1f044020d76a0a9ec56eee66c293.png';
+  'http://77.110.101.28/cdn/femboyparty/UKHimx__kjbu.png';
 
 const rules: EmbedDefinition = {
   name: 'rules',
@@ -22,7 +22,7 @@ const rules: EmbedDefinition = {
         '⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯\n' +
         'Для верификации, пройдите в <#1444788047009812650>'
       )
-      .setImage('https://i.ibb.co/HLkgsKc8/G7r-QMt0-WAAAGAEV.webp');
+      .setImage('http://77.110.101.28/cdn/femboyparty/WaD5qxv09NnS.webp');
 
     const r2 = new EmbedBuilder()
       .setTitle('Основные правила сервера')
@@ -59,7 +59,7 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('http://77.110.101.28/cdn/other/Xn8uRGfitsq1.webp');
+      .setImage('http://77.110.101.28/cdn/femboyparty/m_TyUeleWHUy.webp');
 
     const r3 = new EmbedBuilder()
       .setTitle('Правила текстовых каналов')
@@ -76,7 +76,7 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/W4JRnB73/femboypartyrule1banner.webp');
+      .setImage('http://77.110.101.28/cdn/femboyparty/-8FaIhM50u9B.webp');
 
     const r4 = new EmbedBuilder()
       .setTitle('Правила голосовых каналов')
@@ -87,7 +87,7 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/s9wySTK6/femboypartyrule2banner.webp');
+      .setImage('http://77.110.101.28/cdn/femboyparty/CVvCjVM3mqZD.webp');
 
     const r5 = new EmbedBuilder()
       .setColor(0xf1e1cb)
@@ -97,7 +97,7 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/1GP6Hp8G/femboypartyrule3banner.webp');
+      .setImage('http://77.110.101.28/cdn/femboyparty/ZINw_IDPZoZW.webp');
 
     const r6 = new EmbedBuilder()
       .setColor(0xffffff)
