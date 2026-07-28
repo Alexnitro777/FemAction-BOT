@@ -63,7 +63,7 @@ const rules: EmbedDefinition = {
 
     const r3 = new EmbedBuilder()
       .setTitle('Правила текстовых каналов')
-      .setColor(0x9dd4f2)
+      .setColor(0xfafcfe)
       .setDescription(
         '`2.0` Запрещены спам, флуд и оффтоп.\n' +
         '```Предупреждение -> Тайм-аут 30 минут.```\n' +
@@ -80,14 +80,14 @@ const rules: EmbedDefinition = {
 
     const r4 = new EmbedBuilder()
       .setTitle('Правила голосовых каналов')
-      .setColor(0xd2b3e9)
+      .setColor(0x51949d)
       .setDescription(
         '`3.0` Запрещено издавать громкие звуки, использовать программы изменяющие голос и использование саундпада. Правило действует в том случае если вышеназванное мешает участникам войса.\n' +
         '```Предупреждение -> Тайм-аут 1 день.```'
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('http://77.110.101.28/cdn/femboyparty/CVvCjVM3mqZD.webp');
+      .setImage('http://77.110.101.28/cdn/femboyparty/LL4Tbi5TFYQA.png');
 
     const r5 = new EmbedBuilder()
       .setColor(0xf1e1cb)
