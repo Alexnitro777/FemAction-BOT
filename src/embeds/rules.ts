@@ -102,7 +102,8 @@ const rules: EmbedDefinition = {
     const r6 = new EmbedBuilder()
       .setColor(0xffffff)
       .setDescription('# **Для корректного отображения сервера не забудьте нажать "Показать все каналы"**')
-      .setFooter({ text: 'Сделано с любовью для Femboy Party.', iconURL: FOOTER_ICON });
+      .setFooter({ text: 'Сделано с любовью для Femboy Party.', iconURL: FOOTER_ICON })
+      .setImage('http://77.110.101.28/cdn/femboyparty/-ihqSIj-cWd8.jpg');
 
     return { embeds: [r1, r2, r3, r4, r5, r6] };
   },
