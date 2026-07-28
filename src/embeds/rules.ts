@@ -63,7 +63,7 @@ const rules: EmbedDefinition = {
 
     const r3 = new EmbedBuilder()
       .setTitle('Правила текстовых каналов')
-      .setColor(0xfafcfe)
+      .setColor(0x96d6d1)
       .setDescription(
         '`2.0` Запрещены спам, флуд и оффтоп.\n' +
         '```Предупреждение -> Тайм-аут 30 минут.```\n' +
@@ -76,7 +76,7 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('http://77.110.101.28/cdn/femboyparty/-8FaIhM50u9B.webp');
+      .setImage('http://77.110.101.28/cdn/femboyparty/X8CNEX3xZsGw.jpg');
 
     const r4 = new EmbedBuilder()
       .setTitle('Правила голосовых каналов')
