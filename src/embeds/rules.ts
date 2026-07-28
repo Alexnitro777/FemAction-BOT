@@ -59,7 +59,7 @@ const rules: EmbedDefinition = {
       )
       .setTimestamp(new Date('2026-07-26T21:00:00.000Z'))
       .setFooter({ text: 'Последнее обновление раздела', iconURL: FOOTER_ICON })
-      .setImage('https://i.ibb.co/7NGfPtkP/femboypartybanner.webp');
+      .setImage('https://i.ibb.co/XrKxw7FK/femboypartybanner.webp');
 
     const r3 = new EmbedBuilder()
       .setTitle('Правила текстовых каналов')
