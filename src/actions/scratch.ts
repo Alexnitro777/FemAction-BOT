@@ -2,8 +2,8 @@ import type { ActionDefinition } from '../types.js';
 
 const action: ActionDefinition = {
   name: 'почесать',
-  description: 'Почесать пользователя за ушком.',
-  template: '{author} чешет за ушком {target}.',
+  description: 'Почесать пользователя за животик.',
+  template: '{author} чешет животик {target}.',
   requireTarget: true,
   color: 0xeba0ac,
 };
