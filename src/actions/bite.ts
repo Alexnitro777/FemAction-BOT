@@ -4,8 +4,7 @@ const action: ActionDefinition = {
   name: 'кусь',
   description: 'Укусить пользователя',
   template: '{author} кусьнул(а) {target}.',
-  selfTemplate: '{author} кусает себя за хвост.',
-  requireTarget: false,
+  requireTarget: true,
   color: 0xc94b8a,
 };
 

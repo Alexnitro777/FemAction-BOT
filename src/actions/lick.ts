@@ -4,8 +4,7 @@ const action: ActionDefinition = {
   name: 'лизнуть',
   description: 'Лизнуть пользователя',
   template: '{author} игриво лизнул(а) {target}.',
-  selfTemplate: '{author} облизывает себе лапку.',
-  requireTarget: false,
+  requireTarget: true,
   color: 0xba68c8,
 };
 

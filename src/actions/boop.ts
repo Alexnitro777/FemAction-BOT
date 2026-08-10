@@ -4,8 +4,7 @@ const action: ActionDefinition = {
   name: 'буп',
   description: 'Бупнуть пользователя в носик.',
   template: '{author} бупнул(а) {target} в носик.',
-  selfTemplate: '{author} бупает воздух... никого нет рядом.',
-  requireTarget: false,
+  requireTarget: true,
   color: 0xffc24b,
 };
 

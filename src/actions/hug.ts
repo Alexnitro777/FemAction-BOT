@@ -4,8 +4,7 @@ const action: ActionDefinition = {
   name: 'обнять',
   description: 'Обнять пользователя',
   template: '{author} крепко обнял(а) {target}.',
-  selfTemplate: '{author} обнимает сам(а) себя.',
-  requireTarget: false,
+  requireTarget: true,
   color: 0x7ec8e3,
 };
 

@@ -21,7 +21,6 @@ const action: ActionDefinition = {
   name: 'силли',
   description: 'Силлимер (0-100)',
   template: '',
-  selfTemplate: '',
   requireTarget: false,
   noTarget: true,
   color: 0xffff00,
