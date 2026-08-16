@@ -50,6 +50,8 @@ async function deploy() {
     new SlashCommandBuilder()
       .setName(helpCommand.name)
       .setDescription(helpCommand.description)
+      .setIntegrationTypes(ApplicationIntegrationType.GuildInstall)
+      .setContexts(InteractionContextType.Guild)
       .toJSON()
   );
 
@@ -57,6 +59,8 @@ async function deploy() {
     new SlashCommandBuilder()
       .setName(statisticsCommand.name)
       .setDescription(statisticsCommand.description)
+      .setIntegrationTypes(ApplicationIntegrationType.GuildInstall)
+      .setContexts(InteractionContextType.Guild)
       .addUserOption((opt) =>
         opt
           .setName('цель')
@@ -70,6 +74,8 @@ async function deploy() {
     new SlashCommandBuilder()
       .setName(leaderboardCommand.name)
       .setDescription(leaderboardCommand.description)
+      .setIntegrationTypes(ApplicationIntegrationType.GuildInstall)
+      .setContexts(InteractionContextType.Guild)
       .toJSON()
   );
 
@@ -77,6 +83,8 @@ async function deploy() {
     new SlashCommandBuilder()
       .setName(backfillCommand.name)
       .setDescription(backfillCommand.description)
+      .setIntegrationTypes(ApplicationIntegrationType.GuildInstall)
+      .setContexts(InteractionContextType.Guild)
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
       .toJSON()
   );
@@ -85,6 +93,8 @@ async function deploy() {
     new SlashCommandBuilder()
       .setName(postCommand.name)
       .setDescription(postCommand.description)
+      .setIntegrationTypes(ApplicationIntegrationType.GuildInstall)
+      .setContexts(InteractionContextType.Guild)
       .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
       .addStringOption((opt) =>
         opt
