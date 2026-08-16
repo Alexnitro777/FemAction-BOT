@@ -106,20 +106,13 @@ async function deploy() {
   const rest = new REST({ version: '10' }).setToken(config.token);
 
   try {
-    if (config.guildId) {
-      await rest.put(
-        Routes.applicationGuildCommands(config.clientId, config.guildId),
-        { body }
-      );
-      console.log(
-        `Зарегистрировано ${body.length} команд на сервере ${config.guildId}.`
-      );
-    } else {
-      await rest.put(Routes.applicationCommands(config.clientId), { body });
-      console.log(
-        `Зарегистрировано ${body.length} глобальных команд (обновление до часа).`
-      );
-    }
+    // Всегда регистрируем глобально — это нужно чтобы команды не дублировались
+    // когда бот установлен и на сервер (GuildInstall), и в ЛС (UserInstall).
+    // Серверные (guildId) команды + User App = дублирование в Discord.
+    await rest.put(Routes.applicationCommands(config.clientId), { body });
+    console.log(
+      `Зарегистрировано ${body.length} глобальных команд (обновление до часа).`
+    );
   } catch (err) {
     console.error('Ошибка регистрации команд:', err);
     process.exitCode = 1;
