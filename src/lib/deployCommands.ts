@@ -1,5 +1,7 @@
 import {
+  ApplicationIntegrationType,
   ChannelType,
+  InteractionContextType,
   PermissionFlagsBits,
   REST,
   Routes,
@@ -21,7 +23,16 @@ async function deploy() {
   for (const action of actions.values()) {
     const builder = new SlashCommandBuilder()
       .setName(action.name)
-      .setDescription(action.description);
+      .setDescription(action.description)
+      .setIntegrationTypes(
+        ApplicationIntegrationType.GuildInstall,
+        ApplicationIntegrationType.UserInstall,
+      )
+      .setContexts(
+        InteractionContextType.Guild,
+        InteractionContextType.BotDM,
+        InteractionContextType.PrivateChannel,
+      );
 
     if (!action.noTarget) {
       builder.addUserOption((opt) =>
