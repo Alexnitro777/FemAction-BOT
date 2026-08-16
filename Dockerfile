@@ -20,4 +20,4 @@ RUN npm ci --omit=dev
 
 COPY --from=builder /app/dist ./dist
 
-CMD ["sh", "-c", "node dist/lib/deployCommands.js && node dist/index.js"]
+CMD ["sh", "-c", "node dist/lib/clearGuildCommands.js; node dist/lib/deployCommands.js && node dist/index.js"]
