@@ -35,11 +35,11 @@ export function buildActionResponse(
   let text: string;
 
   if (targetMention) {
-    text = fill(action.template, authorMention, targetMention);
+    text = fill(action.template ?? '', authorMention, targetMention);
   } else if (action.selfTemplate) {
     text = fill(action.selfTemplate, authorMention, authorMention);
   } else {
-    text = fill(action.template, authorMention, authorMention);
+    text = fill(action.template ?? '', authorMention, authorMention);
   }
 
   if (!text) {

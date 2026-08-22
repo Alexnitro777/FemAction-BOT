@@ -83,6 +83,24 @@ export function registerInteractionHandler(client: BotClient) {
         return;
       }
 
+      if (target && action.protectedTargets?.includes(target.id) && action.protectedResponse) {
+        const { text, gif, color } = action.protectedResponse;
+        const protectedEmbed = new EmbedBuilder()
+          .setColor(color ?? action.color ?? 0xff7fa5)
+          .setDescription(text)
+          .setImage(gif);
+        await interaction.reply({ embeds: [protectedEmbed] });
+        return;
+      }
+
+      if (action.onlyTargets && target && !action.onlyTargets.includes(target.id)) {
+        await interaction.reply({
+          content: 'Эту команду нельзя применить к этому пользователю.',
+          flags: MessageFlags.Ephemeral,
+        });
+        return;
+      }
+
       const authorMention = `<@${interaction.user.id}>`;
       const targetMention = target ? `<@${target.id}>` : null;
 

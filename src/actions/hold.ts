@@ -5,7 +5,7 @@ const action: ActionDefinition = {
   description: 'Зажать в ляшках няшку',
   template: '{author} крепко зажал в ляшках {target}.',
   requireTarget: true,
-  color: 0x7ec8e3,
+  color: 0xffc0cb,
 };
 
 export default action;

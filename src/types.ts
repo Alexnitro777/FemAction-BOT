@@ -9,11 +9,18 @@ import type { EmbedDefinition } from './embeds/types.js';
 export interface ActionDefinition {
   name: string;
   description: string;
-  template: string;
+  template?: string;
   selfTemplate?: string;
   requireTarget?: boolean;
   noTarget?: boolean;
   color?: number;
+  protectedTargets?: string[];
+  protectedResponse?: {
+    text: string;
+    gif: string;
+    color?: number;
+  };
+  onlyTargets?: string[];
   customEmbed?: (authorMention: string, targetMention: string | null) => {
     title?: string;
     description: string;
