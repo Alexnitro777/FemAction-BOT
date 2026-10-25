@@ -1,0 +1,383 @@
+{
+  "communities": {
+    "0": [
+      "discord_js",
+      "ref_discord_js",
+      "src_actions_bite",
+      "src_actions_bite_action",
+      "src_actions_boop",
+      "src_actions_boop_action",
+      "src_actions_execute",
+      "src_actions_execute_action",
+      "src_actions_hold",
+      "src_actions_hold_action",
+      "src_actions_hug",
+      "src_actions_hug_action",
+      "src_actions_kiss",
+      "src_actions_kiss_action",
+      "src_actions_lick",
+      "src_actions_lick_action",
+      "src_actions_pat",
+      "src_actions_pat_action",
+      "src_actions_scratch",
+      "src_actions_scratch_action",
+      "src_actions_slap",
+      "src_actions_slap_action",
+      "src_embeds_info",
+      "src_embeds_info_emoji",
+      "src_embeds_info_info",
+      "src_embeds_info_withemoji",
+      "src_embeds_rules",
+      "src_embeds_rules_rules",
+      "src_embeds_types",
+      "src_embeds_types_embeddefinition",
+      "src_embeds_types_embedmessage",
+      "src_lib_cooldowns",
+      "src_types",
+      "src_types_actiondefinition",
+      "src_types_client",
+      "src_types_discord_js"
+    ],
+    "1": [
+      "src_commands_help",
+      "src_commands_help_buildhelpembed",
+      "src_commands_help_command",
+      "src_commands_help_formatline",
+      "src_commands_help_hidden_utility",
+      "src_commands_leaderboard_command",
+      "src_commands_post",
+      "src_commands_post_command",
+      "src_commands_statistics_command",
+      "src_events_activity_flushvoicesessions",
+      "src_index",
+      "src_index_main",
+      "src_lib_cooldowns_cooldownmanager",
+      "src_lib_cooldowns_cooldownmanager_check",
+      "src_lib_cooldowns_cooldownmanager_cleanup",
+      "src_lib_cooldowns_cooldownmanager_clear",
+      "src_lib_cooldowns_cooldownmanager_constructor",
+      "src_lib_cooldowns_cooldownmanager_set",
+      "src_lib_deploycommands",
+      "src_lib_deploycommands_deploy",
+      "src_lib_loadactions_loadactions",
+      "src_lib_statsstore_flushstats",
+      "src_lib_statsstore_importlegacyjson",
+      "src_lib_statsstore_loadstats",
+      "src_lib_statsstore_startautoflush",
+      "src_types_botclient",
+      "src_types_utilitycommand"
+    ],
+    "2": [
+      "src_events_activity",
+      "src_events_activity_activesessions",
+      "src_events_activity_counts",
+      "src_events_activity_describeroleerror",
+      "src_events_activity_ensureroleexists",
+      "src_events_activity_grantrole",
+      "src_events_activity_handleguildmemberupdate",
+      "src_events_activity_handlevoicestateupdate",
+      "src_events_activity_inscope",
+      "src_events_activity_missingrolewarned",
+      "src_events_activity_reconcilesessions",
+      "src_events_activity_registeractivityhandlers",
+      "src_events_activity_revokerole",
+      "src_events_activity_runsweep",
+      "src_events_activity_scanexistingvoice",
+      "src_events_activity_sessionkey",
+      "src_events_activity_settlesession",
+      "src_events_activity_sweeproles",
+      "src_events_activity_syncrewardroles",
+      "src_events_activity_syncrewardrolesformember",
+      "src_events_activity_tickvoice",
+      "src_lib_rewardsconfig_getmessageroles",
+      "src_lib_rewardsconfig_getremoveunearnedroles",
+      "src_lib_rewardsconfig_getvoiceroles",
+      "src_lib_rewardsconfig_getvoicerules",
+      "src_lib_rewardsconfig_refreshifchanged",
+      "src_lib_statsstore_getstats"
+    ],
+    "3": [
+      "src_actions_silly",
+      "src_actions_silly_action",
+      "src_actions_silly_pick",
+      "src_actions_silly_sillypool",
+      "src_actions_silly_tiers",
+      "src_events_interactioncreate",
+      "src_events_interactioncreate_registerinteractionhandler",
+      "src_lib_buildresponse",
+      "src_lib_buildresponse_buildactionresponse",
+      "src_lib_buildresponse_fill",
+      "src_lib_formattime_formatcooldowntime",
+      "src_lib_gifstore",
+      "src_lib_gifstore_getgifs",
+      "src_lib_gifstore_getsillypool",
+      "src_lib_gifstore_gifs",
+      "src_lib_gifstore_ishttpurl",
+      "src_lib_gifstore_lastindex",
+      "src_lib_gifstore_pickfrom",
+      "src_lib_gifstore_pickgif",
+      "src_lib_gifstore_picksillygif",
+      "src_lib_gifstore_refreshifchanged",
+      "src_lib_gifstore_reload",
+      "src_lib_gifstore_sanitize",
+      "src_lib_gifstore_silly"
+    ],
+    "4": [
+      "ref_node_sqlite",
+      "src_commands_backfill",
+      "src_commands_backfill_collectarchivedthreads",
+      "src_commands_backfill_collectchannels",
+      "src_commands_backfill_command",
+      "src_commands_backfill_crawlable",
+      "src_commands_backfill_crawlchannel",
+      "src_commands_backfill_hasthreads",
+      "src_commands_backfill_runbackfill",
+      "src_commands_backfill_running",
+      "src_lib_statsstore",
+      "src_lib_statsstore_addmessage",
+      "src_lib_statsstore_addvoicems",
+      "src_lib_statsstore_db_path",
+      "src_lib_statsstore_dirty",
+      "src_lib_statsstore_dirtykey",
+      "src_lib_statsstore_emptystats",
+      "src_lib_statsstore_getuser",
+      "src_lib_statsstore_guilds",
+      "src_lib_statsstore_guildstats",
+      "src_lib_statsstore_legacy_json_path",
+      "src_lib_statsstore_setmessages",
+      "src_lib_statsstore_userstats"
+    ],
+    "5": [
+      "package",
+      "package_dependencies",
+      "package_dependencies_discord_js",
+      "package_description",
+      "package_devdependencies",
+      "package_devdependencies_tsx",
+      "package_devdependencies_types_node",
+      "package_devdependencies_typescript",
+      "package_main",
+      "package_name",
+      "package_scripts",
+      "package_scripts_build",
+      "package_scripts_clear_guild",
+      "package_scripts_deploy",
+      "package_scripts_deploy_prod",
+      "package_scripts_dev",
+      "package_scripts_start",
+      "package_type",
+      "package_version",
+      "ref_tsx",
+      "ref_types_node",
+      "ref_typescript"
+    ],
+    "6": [
+      "ref_node_fs",
+      "ref_node_path",
+      "ref_node_url",
+      "src_config",
+      "src_config_config",
+      "src_config_loadrawconfig",
+      "src_config_raw",
+      "src_config_rawconfig",
+      "src_config_required",
+      "src_embeds_registry",
+      "src_embeds_registry_dirname",
+      "src_embeds_registry_isembeddefinition",
+      "src_embeds_registry_loadembeds",
+      "src_embeds_registry_skip",
+      "src_lib_clearguildcommands",
+      "src_lib_clearguildcommands_clear",
+      "src_lib_loadactions",
+      "src_lib_loadactions_actions_dir",
+      "src_lib_loadactions_dirname"
+    ],
+    "7": [
+      "src_commands_leaderboard",
+      "src_commands_leaderboard_buildembed",
+      "src_commands_leaderboard_buildrow",
+      "src_commands_leaderboard_entry",
+      "src_commands_leaderboard_medals",
+      "src_commands_leaderboard_page",
+      "src_commands_leaderboard_rankprefix",
+      "src_commands_leaderboard_topmessages",
+      "src_commands_leaderboard_topvoice",
+      "src_commands_statistics",
+      "src_commands_statistics_buildstatsembed",
+      "src_events_activity_getactivevoicems",
+      "src_lib_formattime",
+      "src_lib_formattime_formatmessagecount",
+      "src_lib_formattime_formatvoiceduration",
+      "src_lib_formattime_formatvoiceshort",
+      "src_lib_formattime_pluralize",
+      "src_lib_statsstore_getguilduserids"
+    ],
+    "8": [
+      "tsconfig",
+      "tsconfig_compileroptions",
+      "tsconfig_compileroptions_declaration",
+      "tsconfig_compileroptions_esmoduleinterop",
+      "tsconfig_compileroptions_forceconsistentcasinginfilenames",
+      "tsconfig_compileroptions_module",
+      "tsconfig_compileroptions_moduleresolution",
+      "tsconfig_compileroptions_outdir",
+      "tsconfig_compileroptions_resolvejsonmodule",
+      "tsconfig_compileroptions_rootdir",
+      "tsconfig_compileroptions_skiplibcheck",
+      "tsconfig_compileroptions_sourcemap",
+      "tsconfig_compileroptions_strict",
+      "tsconfig_compileroptions_target",
+      "tsconfig_exclude",
+      "tsconfig_include"
+    ],
+    "9": [
+      "config_json",
+      "docker_compose_yml",
+      "src_config_config_path",
+      "src_lib_rewardsconfig",
+      "src_lib_rewardsconfig_isnonemptystring",
+      "src_lib_rewardsconfig_messagerole",
+      "src_lib_rewardsconfig_messageroles",
+      "src_lib_rewardsconfig_reload",
+      "src_lib_rewardsconfig_sanitizemessageroles",
+      "src_lib_rewardsconfig_sanitizevoiceroles",
+      "src_lib_rewardsconfig_sanitizevoicerules",
+      "src_lib_rewardsconfig_voicerole",
+      "src_lib_rewardsconfig_voiceroles",
+      "src_lib_rewardsconfig_voicerules"
+    ],
+    "10": [
+      "claude_md"
+    ],
+    "11": [
+      "readme_md"
+    ]
+  },
+  "cohesion": {
+    "0": 0.08412698412698413,
+    "1": 0.1282051282051282,
+    "2": 0.21082621082621084,
+    "3": 0.14492753623188406,
+    "4": 0.1383399209486166,
+    "5": 0.09090909090909091,
+    "6": 0.13450292397660818,
+    "7": 0.24183006535947713,
+    "8": 0.125,
+    "9": 0.1978021978021978,
+    "10": 1.0,
+    "11": 1.0
+  },
+  "gods": [
+    {
+      "id": "ref_discord_js",
+      "label": "discord.js",
+      "degree": 19
+    },
+    {
+      "id": "src_types_actiondefinition",
+      "label": "ActionDefinition",
+      "degree": 14
+    },
+    {
+      "id": "src_lib_statsstore_getstats",
+      "label": "getStats()",
+      "degree": 13
+    },
+    {
+      "id": "tsconfig_compileroptions",
+      "label": "compilerOptions",
+      "degree": 13
+    },
+    {
+      "id": "src_events_activity_syncrewardroles",
+      "label": "syncRewardRoles()",
+      "degree": 12
+    },
+    {
+      "id": "src_events_activity_registeractivityhandlers",
+      "label": "registerActivityHandlers()",
+      "degree": 12
+    },
+    {
+      "id": "src_index_main",
+      "label": "main()",
+      "degree": 11
+    },
+    {
+      "id": "src_commands_statistics_buildstatsembed",
+      "label": "buildStatsEmbed()",
+      "degree": 8
+    },
+    {
+      "id": "src_events_activity_handlevoicestateupdate",
+      "label": "handleVoiceStateUpdate()",
+      "degree": 8
+    },
+    {
+      "id": "src_events_activity_handleguildmemberupdate",
+      "label": "handleGuildMemberUpdate()",
+      "degree": 8
+    }
+  ],
+  "surprises": [
+    {
+      "source": "pick()",
+      "target": "pickSillyGif()",
+      "source_files": [
+        "src/actions/silly.ts",
+        "src/lib/gifStore.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "peripheral node `pick()` unexpectedly reaches hub `pickSillyGif()`"
+    },
+    {
+      "source": "runBackfill()",
+      "target": "syncRewardRolesForMember()",
+      "source_files": [
+        "src/commands/backfill.ts",
+        "src/events/activity.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "runBackfill()",
+      "target": "flushStats()",
+      "source_files": [
+        "src/commands/backfill.ts",
+        "src/lib/statsStore.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "topMessages()",
+      "target": "getStats()",
+      "source_files": [
+        "src/commands/leaderboard.ts",
+        "src/lib/statsStore.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    },
+    {
+      "source": "topVoice()",
+      "target": "getStats()",
+      "source_files": [
+        "src/commands/leaderboard.ts",
+        "src/lib/statsStore.ts"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "bridges separate communities"
+    }
+  ],
+  "tokens": {
+    "input": 7464,
+    "output": 2412
+  }
+}

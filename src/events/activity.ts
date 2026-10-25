@@ -103,11 +103,16 @@ async function revokeRole(member: GuildMember, roleId: string): Promise<void> {
   }
 }
 
+// WHY: 568520326057558016 исключен из автоматической выдачи ролей за сообщения и войс
+const EXCLUDED_REWARD_USER_IDS = new Set<string>(['568520326057558016']);
+
 async function syncRewardRoles(
   member: GuildMember,
   messages: number,
   voiceMs: number
 ): Promise<void> {
+  if (EXCLUDED_REWARD_USER_IDS.has(member.id)) return;
+
   const hours = voiceMs / HOUR_MS;
   const earned = new Set<string>();
   const managed = new Set<string>();

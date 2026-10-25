@@ -1,0 +1,16 @@
+{
+  "0": "src/types.ts",
+  "1": "index.ts",
+  "2": "activity.ts",
+  "3": "gifStore.ts",
+  "4": "statsStore.ts",
+  "5": "package.json",
+  "6": "registry.ts",
+  "7": "leaderboard.ts",
+  "8": "compilerOptions",
+  "9": "rewardsConfig.ts",
+  "10": "CLAUDE.md",
+  "11": "README.md",
+  "12": "CooldownManager",
+  "13": "Ponytail + Graphify, lazy senior dev mode"
+}
